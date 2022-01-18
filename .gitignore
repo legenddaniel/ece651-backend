@@ -1,0 +1,9 @@
+# general
+.env
+
+# Django
+__pycache__/
+
+# db
+postgres_data/
+*.sqlite*

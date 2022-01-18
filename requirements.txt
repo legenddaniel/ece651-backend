@@ -1,0 +1,5 @@
+# You don't need to manually install packages. All packages will be installed inside docker. 
+# Put package name and version here and rebuild the images.
+
+Django==4.0.1
+psycopg2==2.9.3
