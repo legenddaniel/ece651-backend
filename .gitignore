@@ -1,5 +1,6 @@
 # general
 .env
+config.toml
 
 # Django
 __pycache__/
