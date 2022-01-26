@@ -66,11 +66,9 @@ class Products(models.Model):
         return self.name
 
 class Product_Nutrients(models.Model):
-    # p_nutrient_id = models.AutoField(primary_key=True)
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
     nutrient_id = models.ForeignKey(Nutrients, null=True, blank=True, on_delete=models.SET_NULL)
     contains = models.DecimalField('nutrients quantity', max_digits=10, decimal_places=2)
-    # def __str__(self):
-    #     return self.product_id
+
 
 
