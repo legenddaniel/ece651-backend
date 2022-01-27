@@ -58,3 +58,6 @@ class User_Cart(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     product_id = models.ManyToManyField(Products)
     quantity = models.IntegerField()
+    def __str__(self):
+        product_name = ", ".join(str(seg) for seg in self.product_id.all())
+        return "{}, {}".format(self.user_id, product_name)

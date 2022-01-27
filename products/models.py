@@ -57,7 +57,7 @@ class Products(models.Model):
     nutrients = models.ManyToManyField(Nutrients, through='Product_Nutrients')
     labels = models.ManyToManyField(Product_Tag)
     last_order_timestamp = models.DateTimeField(auto_now=True)
-    image = models.URLField(max_length=200)
+    image = models.URLField(max_length=500)
 
     def __str__(self):
         return self.name
@@ -66,6 +66,8 @@ class Product_Nutrients(models.Model):
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
     nutrient_id = models.ForeignKey(Nutrients, null=True, blank=True, on_delete=models.SET_NULL)
     contains = models.DecimalField('nutrients quantity', max_digits=10, decimal_places=2)
+    def __str__(self):
+        return str(self.product_id) + " - " + str(self.nutrient_id)
 
 
 
