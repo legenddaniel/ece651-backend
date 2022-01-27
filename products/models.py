@@ -33,9 +33,6 @@ class Products(models.Model):
         ('L', 'liter'),
     ]
     P_UNIT = [
-        ('g', 'gram'),
-        ('kg', 'kilogram'),
-        ('ml', 'ml'),
         ('L', 'liter'),
         ('bag', 'bag'),
         ('bottle', 'bottle'),
