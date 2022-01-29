@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from recipes.models import Recipe
-from products.models import Products
 
 
 class CustomAccountManager(BaseUserManager):
@@ -52,12 +51,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.user_name
-
-class User_Cart(models.Model):
-    cart_id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    product_id = models.ManyToManyField(Products)
-    quantity = models.IntegerField()
-    def __str__(self):
-        product_name = ", ".join(str(seg) for seg in self.product_id.all())
-        return "{}, {}".format(self.user_id, product_name)
