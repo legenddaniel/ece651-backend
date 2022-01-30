@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import Products_Category
-from .models import Products
-from .models import Nutrients
-from .models import Product_Nutrients
-from .models import Product_Tag
+from .models import ProductCategory
+from .models import Product
+from .models import Nutrient
+from .models import ProductNutrient
+from .models import ProductTag
 
 # Register your models here.
-admin.site.register(Products_Category)
-admin.site.register(Products)
-admin.site.register(Nutrients)
-admin.site.register(Product_Nutrients)
-admin.site.register(Product_Tag)
+admin.site.register(ProductCategory)
+admin.site.register(Product)
+admin.site.register(Nutrient)
+admin.site.register(ProductNutrient)
+admin.site.register(ProductTag)
