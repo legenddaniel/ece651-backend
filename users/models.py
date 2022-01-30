@@ -5,6 +5,8 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from recipes.models import Recipe
 
+from project.validators import CustomValidator
+
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, user_name, first_name, last_name, password, **other_fields):
@@ -30,18 +32,16 @@ class CustomAccountManager(BaseUserManager):
 
 # Create your models here.
 class User(AbstractBaseUser, PermissionsMixin):
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
-    phone_regex = RegexValidator(regex=r'^\+\d{8,15}$',
-                                 message="Phone number must be entered in the format: '+123456789'. Up to 15 digits allowed.")
-    user_id = models.BigAutoField(primary_key=True)
+
     email = models.EmailField(_('email address'), unique=True)
-    user_name = models.CharField(max_length=50, validators=[alphanumeric], unique=True)
-    first_name = models.CharField(max_length=50, blank=True)
-    last_name = models.CharField(max_length=50, blank=True)
-    phone_no = models.CharField(max_length=16, validators=[phone_regex], blank=True)  # validators should be a list
+    first_name = models.CharField(max_length=50, blank=True, null=True, validators=[CustomValidator.alphanumeric])
+    last_name = models.CharField(max_length=50, blank=True, null=True, validators=[CustomValidator.alphanumeric])
+    phone_no = models.CharField(max_length=10, blank=True, null=True, validators=[CustomValidator.phone_number])
+    user_name = models.CharField(max_length=50, validators=[CustomValidator.alphanumeric], unique=True)
     date_of_join = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    user_id = models.BigAutoField(primary_key=True)
     fav_recipes = models.ManyToManyField(Recipe)
 
     objects = CustomAccountManager()
