@@ -3,17 +3,17 @@ from django.db import models
 
 # Create your models here.
 
-class Products_Category(models.Model):
+class ProductsCategory(models.Model):
     name = models.CharField('category name', max_length=50)
     def __str__(self):
         return self.name
 
-class Product_Tag(models.Model):
+class ProductTag(models.Model):
     name = name = models.CharField('category name', max_length=50)
     def __str__(self):
         return self.name
 
-class Nutrients(models.Model):
+class Nutrient(models.Model):
     MEASUREMENT = [
         ('g', 'gram'),
         ('mg', 'milligram'),
@@ -25,7 +25,7 @@ class Nutrients(models.Model):
     def __str__(self):
         return self.name
 
-class Products(models.Model):
+class Product(models.Model):
     SI_UNIT = [
         ('g', 'gram'),
         ('kg', 'kilogram'),
@@ -43,7 +43,7 @@ class Products(models.Model):
     ]
     products_id = models.AutoField(primary_key=True)
     name = models.CharField('product name', max_length=120)
-    category = models.ForeignKey(Products_Category, null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(ProductsCategory, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
     si_unit = models.CharField('product si unit', max_length=10, choices=SI_UNIT, blank=True)
     quantity_in_si_unit = models.DecimalField('si quantity', max_digits=10, decimal_places=2, null=True, blank=True)
@@ -54,17 +54,17 @@ class Products(models.Model):
     stock = models.IntegerField()
     on_promotion = models.BooleanField(default=False)
     in_recipe = models.BooleanField(default=False)
-    nutrients = models.ManyToManyField(Nutrients, through='Product_Nutrients')
-    labels = models.ManyToManyField(Product_Tag)
+    nutrients = models.ManyToManyField(Nutrient, through='products.ProductNutrient')
+    labels = models.ManyToManyField(ProductTag)
     last_order_timestamp = models.DateTimeField(auto_now=True)
     image = models.URLField(max_length=500)
 
     def __str__(self):
         return self.name
 
-class Product_Nutrients(models.Model):
-    product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
-    nutrient_id = models.ForeignKey(Nutrients, null=True, blank=True, on_delete=models.SET_NULL)
+class ProductNutrient(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    nutrient_id = models.ForeignKey(Nutrient, null=True, blank=True, on_delete=models.SET_NULL)
     contains = models.DecimalField('nutrients quantity', max_digits=10, decimal_places=2)
     def __str__(self):
         return str(self.product_id) + " - " + str(self.nutrient_id)
