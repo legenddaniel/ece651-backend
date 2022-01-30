@@ -3,8 +3,11 @@ from django.db import models
 
 # Create your models here.
 
-class ProductsCategory(models.Model):
+class ProductCategory(models.Model):
     name = models.CharField('category name', max_length=50)
+    class Meta:
+        verbose_name = "product category"
+        verbose_name_plural = "product categories"
     def __str__(self):
         return self.name
 
@@ -43,7 +46,7 @@ class Product(models.Model):
     ]
     products_id = models.AutoField(primary_key=True)
     name = models.CharField('product name', max_length=120)
-    category = models.ForeignKey(ProductsCategory, null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(ProductCategory, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
     si_unit = models.CharField('product si unit', max_length=10, choices=SI_UNIT, blank=True)
     quantity_in_si_unit = models.DecimalField('si quantity', max_digits=10, decimal_places=2, null=True, blank=True)
