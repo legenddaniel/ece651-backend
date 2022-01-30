@@ -1,53 +1,73 @@
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from recipes.models import Recipe
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
 
+from model_utils.models import UUIDModel, TimeStampedModel
+
+from recipes.models import Recipe
 from project.validators import CustomValidator
 
 
 class CustomAccountManager(BaseUserManager):
-    def create_superuser(self, email, user_name, first_name, last_name, password, **other_fields):
+    def create_superuser(self, email, password, **other_fields):
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
-        other_fields.setdefault('is_active', True)
 
-        if other_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must be assigned to is_staff=True')
-        if other_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must be assigned to is_superuser=True')
+        return self.__create_user(email, password, **other_fields)
 
-        return self.create_user(email, user_name, first_name, last_name, password, **other_fields)
+    def create_user(self, email, password, **other_fields):
+        other_fields.setdefault("is_staff", False)
+        other_fields.setdefault("is_superuser", False)
 
-    def create_user(self, email, user_name, first_name, last_name, password, **other_fields):
+        return self.__create_user(email, password, **other_fields)
+
+    def __create_user(self, email, password, **other_fields):
         if not email:
             raise ValueError(_('You must provide an email address'))
+
+        other_fields.setdefault('is_active', True)
+
         email = self.normalize_email(email)
-        user = self.model(email=email, user_name=user_name, first_name=first_name, last_name=last_name, **other_fields)
+        user = self.model(email=email, **other_fields)
         user.set_password(password)
         user.save()
         return user
 
-# Create your models here.
-class User(AbstractBaseUser, PermissionsMixin):
 
+class User(AbstractUser, PermissionsMixin, UUIDModel, TimeStampedModel):
+    username = models.CharField(max_length=50, blank=True, null=True, validators=[
+                                CustomValidator.alphanumeric])
     email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(max_length=50, blank=True, null=True, validators=[CustomValidator.alphanumeric])
-    last_name = models.CharField(max_length=50, blank=True, null=True, validators=[CustomValidator.alphanumeric])
-    phone_no = models.CharField(max_length=10, blank=True, null=True, validators=[CustomValidator.phone_number])
-    user_name = models.CharField(max_length=50, validators=[CustomValidator.alphanumeric], unique=True)
-    date_of_join = models.DateTimeField(default=timezone.now)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    user_id = models.BigAutoField(primary_key=True)
+
+    first_name = None
+    last_name = None
+
     fav_recipes = models.ManyToManyField(Recipe)
 
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name', 'first_name', 'last_name']
+    REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.user_name
+        return self.email
+
+
+class ShippingAddress(UUIDModel, TimeStampedModel):
+    class Province(models.TextChoices):
+        ON = 'ON', _('ON')
+        # ...more
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    full_name = models.CharField(max_length=50, validators=[
+                                 CustomValidator.alphanumeric])
+    phone_number = models.CharField(max_length=10, validators=[
+                                    CustomValidator.phone_number])
+    email = models.EmailField()
+    address1 = models.CharField(max_length=10, validators=[
+                                CustomValidator.alphanumeric])
+    address2 = models.CharField(max_length=10, validators=[
+                                CustomValidator.alphanumeric])
+    province = models.CharField(max_length=2, choices=Province.choices, validators=[
+                                CustomValidator.alphanumeric])
