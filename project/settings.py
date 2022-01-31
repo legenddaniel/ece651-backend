@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # Our apps
     'users',
+    'custom_auth',
     'app',
     'products',
     'recipes',

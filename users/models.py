@@ -65,8 +65,8 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
     phone_number = models.CharField(max_length=10, validators=[
                                     CustomValidator.phone_number])
     email = models.EmailField()
-    address1 = models.CharField(max_length=10, validators=[
+    address1 = models.CharField(max_length=50, validators=[
                                 CustomValidator.alphanumeric])
-    address2 = models.CharField(max_length=10, default='', validators=[
+    address2 = models.CharField(max_length=50, default='', validators=[
                                 CustomValidator.alphanumeric])
     province = models.CharField(max_length=2, choices=Province.choices)
