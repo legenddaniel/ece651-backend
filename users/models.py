@@ -34,8 +34,8 @@ class CustomAccountManager(BaseUserManager):
         return user
 
 
-class User(AbstractUser, PermissionsMixin, UUIDModel, TimeStampedModel):
-    username = models.CharField(max_length=50, blank=True, null=True, validators=[
+class User(AbstractUser, UUIDModel):
+    username = models.CharField(max_length=50, default='', validators=[
                                 CustomValidator.alphanumeric])
     email = models.EmailField(_('email address'), unique=True)
 
@@ -67,7 +67,6 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
     email = models.EmailField()
     address1 = models.CharField(max_length=10, validators=[
                                 CustomValidator.alphanumeric])
-    address2 = models.CharField(max_length=10, validators=[
+    address2 = models.CharField(max_length=10, default='', validators=[
                                 CustomValidator.alphanumeric])
-    province = models.CharField(max_length=2, choices=Province.choices, validators=[
-                                CustomValidator.alphanumeric])
+    province = models.CharField(max_length=2, choices=Province.choices)
