@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from knox.views import LoginView as KnoxLoginView
 
-from .serializers import ChangePasswordSerializer
+from .serializers import ChangePasswordSerializer, RegistrationSerializer
 
 
 class LoginView(KnoxLoginView):
@@ -19,6 +19,17 @@ class LoginView(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         return super(LoginView, self).post(request, format=None)
+
+
+class RegistrationView(ModelViewSet):
+    permission_classes = (AllowAny,)
+    
+    def create(self, request):
+        serializer = RegistrationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response()
 
 
 class ChangePasswordView(ModelViewSet):

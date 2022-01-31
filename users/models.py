@@ -26,6 +26,7 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError(_('You must provide an email address'))
 
         other_fields.setdefault('is_active', True)
+        other_fields.setdefault('username', '')
 
         email = self.normalize_email(email)
         user = self.model(email=email, **other_fields)
@@ -35,7 +36,7 @@ class CustomAccountManager(BaseUserManager):
 
 
 class User(AbstractUser, UUIDModel):
-    username = models.CharField(max_length=50, default='', validators=[
+    username = models.CharField(max_length=50, validators=[
                                 CustomValidator.alphanumeric])
     email = models.EmailField(_('email address'), unique=True)
 
