@@ -8,11 +8,10 @@ from .models import ProductTag
 # Register your models here.
 admin.site.register(Nutrient)
 admin.site.register(ProductNutrient)
-admin.site.register(ProductTag)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'description', 'si_unit',
+    list_display = ['name', 'category', 'si_unit',
                     'p_unit', 'is_active', 'unit_quantity',
                     'price', 'stock', 'on_promotion',
                     'slug']
@@ -21,6 +20,11 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 @admin.register(ProductCategory)
+class ProductCategoryAdmin(admin.ModelAdmin):
+    list_display = ['name','slug',]
+    prepopulated_fields = {'slug': ('name',)}
+
+@admin.register(ProductTag)
 class ProductCategoryAdmin(admin.ModelAdmin):
     list_display = ['name','slug',]
     prepopulated_fields = {'slug': ('name',)}

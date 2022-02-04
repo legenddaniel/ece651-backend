@@ -7,12 +7,11 @@ urlpatterns=[
     })),
     path('<str:pk>', ProductsViewSet.as_view({
         'get': 'retrieve_product',
-        # 'put': 'update',
-        # 'delete': 'destroy',
     })),
     path('search/<str:search_keywords>', ProductsViewSet.as_view({
         'get': 'search_product',
-        # 'put': 'update',
-        # 'delete': 'destroy',
+    })),
+    path('category/<str:category_name>', ProductsViewSet.as_view({
+        'get': 'category_product',
     })),
 ]

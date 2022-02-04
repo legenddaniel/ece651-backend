@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'rest_framework',
     "knox",
 
@@ -147,7 +148,7 @@ REST_FRAMEWORK = {
         "knox.auth.TokenAuthentication",
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }

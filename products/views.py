@@ -1,12 +1,11 @@
 from django.shortcuts import render
-from django.db.models import Q
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector, TrigramSimilarity
 from rest_framework.views import APIView
 
 from .models import Product
 from .serializers import ProductSerializer, ProductDetailSerializer
-import random
 
 # Create your views here.
 class ProductsViewSet(viewsets.ViewSet):
@@ -21,6 +20,11 @@ class ProductsViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def search_product(self, request, search_keywords=None):
-        searched_products = Product.objects.filter(Q(name__icontains=search_keywords) | Q(category__name__icontains=search_keywords))
+        searched_products = Product.objects.annotate(similarity=TrigramSimilarity('name',search_keywords)+TrigramSimilarity('description',search_keywords)).filter(similarity__gte=0.2).order_by('-similarity')
+        serializer = ProductSerializer(searched_products, many=True)
+        return Response(serializer.data)
+
+    def category_product(self, request, category_name=None):
+        searched_products = Product.objects.annotate(search = SearchVector('category__name'),).filter(search=category_name)
         serializer = ProductSerializer(searched_products, many=True)
         return Response(serializer.data)

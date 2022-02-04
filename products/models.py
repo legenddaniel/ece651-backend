@@ -15,7 +15,8 @@ class ProductCategory(models.Model):
 
 
 class ProductTag(models.Model):
-    name = name = models.CharField('category name', max_length=50)
+    name = name = models.CharField('tag name', max_length=50)
+    slug = models.SlugField(max_length=255, unique=True)
     def __str__(self):
         return self.name
 
