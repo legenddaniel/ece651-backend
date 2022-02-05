@@ -148,7 +148,7 @@ REST_FRAMEWORK = {
         "knox.auth.TokenAuthentication",
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.IsAuthenticated',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
