@@ -18,7 +18,7 @@ class Recipe(models.Model):
         ('indonesian', 'Indonesian'),
         ('middleeast', 'Middle East'),
     ]
-    recipe_id = models.AutoField(primary_key=True)
+    # recipe_id = models.AutoField(primary_key=True)
     name = models.CharField('recipe name',max_length=50)
     description = models.TextField(blank=True)
     rating = models.DecimalField('rating', max_digits=3, decimal_places=1)

@@ -15,7 +15,7 @@ class ProductCategory(models.Model):
 
 
 class ProductTag(models.Model):
-    name = name = models.CharField('tag name', max_length=50)
+    name = models.CharField('tag name', max_length=50)
     slug = models.SlugField(max_length=255, unique=True)
     def __str__(self):
         return self.name
@@ -50,7 +50,7 @@ class Product(models.Model):
         ('item', 'item'),
         ('pack', 'pack'),
     ]
-    product_id = models.AutoField(primary_key=True)
+    # product_id = models.AutoField(primary_key=True)
     name = models.CharField('product name', max_length=120)
     category = models.ForeignKey(ProductCategory, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
@@ -69,8 +69,8 @@ class Product(models.Model):
     image_url = models.URLField(max_length=500)
     slug = models.SlugField(max_length=255)
 
-    class Meta:
-        ordering = ('-product_id',)
+    # class Meta:
+    #     ordering = ('-product_id',)
 
     def __str__(self):
         return self.name
