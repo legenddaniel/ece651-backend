@@ -2,19 +2,24 @@ from django.db import models
 
 
 # Create your models here.
-
 class ProductCategory(models.Model):
-    name = models.CharField('category name', max_length=50)
+    name = models.CharField('category name', max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
+
     class Meta:
         verbose_name = "product category"
         verbose_name_plural = "product categories"
+
     def __str__(self):
         return self.name
 
+
 class ProductTag(models.Model):
-    name = name = models.CharField('category name', max_length=50)
+    name = name = models.CharField('tag name', max_length=50)
+    slug = models.SlugField(max_length=255, unique=True)
     def __str__(self):
         return self.name
+
 
 class Nutrient(models.Model):
     MEASUREMENT = [
@@ -27,6 +32,7 @@ class Nutrient(models.Model):
     measure = models.CharField('nutrient measurement', max_length=30, choices = MEASUREMENT)
     def __str__(self):
         return self.name
+
 
 class Product(models.Model):
     SI_UNIT = [
@@ -44,7 +50,7 @@ class Product(models.Model):
         ('item', 'item'),
         ('pack', 'pack'),
     ]
-    products_id = models.AutoField(primary_key=True)
+    product_id = models.AutoField(primary_key=True)
     name = models.CharField('product name', max_length=120)
     category = models.ForeignKey(ProductCategory, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
@@ -61,9 +67,15 @@ class Product(models.Model):
     labels = models.ManyToManyField(ProductTag)
     last_order_timestamp = models.DateTimeField(auto_now=True)
     image = models.URLField(max_length=500)
+    slug = models.SlugField(max_length=255)
+
+    class Meta:
+        ordering = ('-product_id',)
 
     def __str__(self):
         return self.name
+
+
 
 class ProductNutrient(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
