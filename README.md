@@ -22,5 +22,5 @@ app_1  | Quit the server with CONTROL-C.
 
 - Retrieve recipe lists: `localhost:8000/api/recipes`
 - Retrieve recipe by recipe id: `localhost:8000/api/recipes?id=<id>`
-- Retrieve recipe by recipe name: `localhost:8000/api/recipes?name=<name>`
+- Search recipe by recipe name (full text search allowed): `localhost:8000/api/recipes?name=<name/part-of-the-name>`
 - Retrieve recipe by cuisine: `localhost:8000/api/recipes?cuisine=<cuisine>`
