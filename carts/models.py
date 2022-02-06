@@ -1,12 +1,18 @@
 from django.db import models
 from products.models import Product
 from users.models import User
-# Create your models here.
-class UserCart(models.Model):
-    cart_id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    product_id = models.ManyToManyField(Product)
-    quantity = models.IntegerField()
+
+from model_utils.models import TimeStampedModel
+
+
+class CartItem(TimeStampedModel):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='cart_items')
+
+    # May discuss the behavior when cart item is off shelf. Now follow order item.
+    product = models.ForeignKey(
+        Product, null=True, blank=True, on_delete=models.SET_NULL)
+    quantity = models.PositiveIntegerField()
+
     def __str__(self):
-        product_name = ", ".join(str(seg) for seg in self.product_id.all())
-        return "{}, {}".format(self.user_id, product_name)
+        return "{}, {}".format(self.user__id, self.product)
