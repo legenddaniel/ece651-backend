@@ -59,7 +59,8 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
         ON = 'ON', _('ON')
         # ...more
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='shipping_addresses')
 
     full_name = models.CharField(max_length=50, validators=[
                                  CustomValidator.alphanumeric])
@@ -71,3 +72,6 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
     address2 = models.CharField(max_length=50, default='', validators=[
                                 CustomValidator.alphanumeric])
     province = models.CharField(max_length=2, choices=Province.choices)
+
+    def __str__(self):
+        return 'Shipping Addresses'

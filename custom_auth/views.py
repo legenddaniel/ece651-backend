@@ -18,18 +18,38 @@ class LoginView(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        return super(LoginView, self).post(request, format=None)
+
+        login_res = super(LoginView, self).post(request, format=None)
+
+        user_res = {}
+        for field in user._meta.get_fields():
+            # Token provided by `login_res`. No password return.
+            if field.name in ('auth_token_set', 'password'):
+                continue
+
+            # Get primitive values
+            queryset = getattr(user, field.name, None)
+            if hasattr(queryset, 'all'):
+                # Get object values
+                queryset = queryset.all()
+
+            user_res[field.name] = queryset
+
+        return Response({
+            **login_res.data,
+            **user_res,
+        })
 
 
 class RegistrationView(ModelViewSet):
     permission_classes = (AllowAny,)
-    
+
     def create(self, request):
         serializer = RegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        user = serializer.save()
 
-        return Response()
+        return Response({'id': user.pk})
 
 
 class ChangePasswordView(ModelViewSet):
