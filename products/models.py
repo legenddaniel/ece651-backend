@@ -66,7 +66,7 @@ class Product(models.Model):
     nutrients = models.ManyToManyField(Nutrient, through='products.ProductNutrient')
     labels = models.ManyToManyField(ProductTag)
     last_order_timestamp = models.DateTimeField(auto_now=True)
-    image = models.URLField(max_length=500)
+    image_url = models.URLField(max_length=500)
     slug = models.SlugField(max_length=255)
 
     class Meta:

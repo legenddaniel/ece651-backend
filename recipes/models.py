@@ -24,7 +24,8 @@ class Recipe(models.Model):
     rating = models.DecimalField('rating', max_digits=3, decimal_places=1)
     cuisine = models.CharField(max_length=30, choices=CUISINE)    #incoming choices from ML team
     label = models.ManyToManyField(Label)
-    products = models.ManyToManyField(Product)
+    image_url = models.URLField(max_length=500)
+    products = models.ManyToManyField(Product, related_name='recipe_products')
     instructions = ArrayField(models.CharField(max_length=200))
     last_purchase_made = models.DateTimeField(auto_now=True)
     total_views = models.IntegerField(default=0)
