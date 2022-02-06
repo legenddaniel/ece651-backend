@@ -10,9 +10,9 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0002_alter_productcategory_options'),
+        ('products', '0005_custom_migrations'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('carts', '0002_initial'),
+        ('carts', '0002_usercart_user_id'),
     ]
 
     operations = [
