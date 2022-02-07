@@ -21,4 +21,5 @@ urlpatterns = [
     path(r'api/auth/', include('custom_auth.urls')),
     path(r'api/cart/', include('carts.urls')),
     path(r'api/products/', include('products.urls')),
+    path(r'api/recipes/', include('recipes.urls')),
 ]
