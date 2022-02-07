@@ -17,3 +17,10 @@ app_1  | Quit the server with CONTROL-C.
 - Install Python libs by adding it to `requirements.txt` in proper format instead of running `pip install`.
 - Run `./leh` for shell command helper. `leh` is a developer-friendly shell script with some commonly-used commands. Currently django commands can only run using `leh`.
 - You may need to clean dangling images in docker from time to time. They are usually marked as `<none>`.
+
+# Recipe API
+
+- Retrieve recipe lists: `localhost:8000/api/recipes`
+- Retrieve recipe by recipe id: `localhost:8000/api/recipes?id=<id>`
+- Search recipe by recipe name (full text search allowed): `localhost:8000/api/recipes?name=<name/part-of-the-name>`
+- Retrieve recipe by cuisine: `localhost:8000/api/recipes?cuisine=<cuisine>`

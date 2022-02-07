@@ -18,7 +18,7 @@ class ProductsViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def retrieve_product(self, request, pk=None):
-        product = Product.objects.get(product_id=pk)
+        product = Product.objects.get(id=pk)
         serializer = ProductDetailSerializer(product)
         return Response(serializer.data)
 
