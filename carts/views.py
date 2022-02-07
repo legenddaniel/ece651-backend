@@ -26,12 +26,15 @@ class CartItemView(ModelViewSet):
         items = CartItem.objects.filter(user=request.user, id=cart_item)
         if not items.count():
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
-        items.update(**request.data)
+
+        if 'quantity' in request.data and request.data['quantity'] == 0:
+            items.delete()
+        else:
+            items.update(**request.data)
 
         return Response(self.get_queryset().values())
 
     # Clear cart for current user
     def destroy(self, request):
         self.get_queryset().delete()
-        return Response(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
