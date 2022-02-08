@@ -10,16 +10,16 @@ class CartItemView(ModelViewSet):
     serializer_class = CartItemSerializer
 
     def get_queryset(self):
-        return CartItem.objects.filter(user=self.request.user)
+        return CartItem.objects.select_related('product').filter(user=self.request.user)
 
     # Add one item to cart
     def create(self, request):
         serializer = self.serializer_class(
-            data={**request.data, 'user': request.user.id})
+            data={'user': request.user.id, **request.data})
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(self.get_queryset().values())
+        return self.list(request)
 
     # Update one cart item (e.g. quantity). Do deletion if quantity goes 0.
     def partial_update(self, request, cart_item=None):
@@ -32,7 +32,7 @@ class CartItemView(ModelViewSet):
         else:
             items.update(**request.data)
 
-        return Response(self.get_queryset().values())
+        return self.list(request)
 
     # Clear cart for current user
     def destroy(self, request):
