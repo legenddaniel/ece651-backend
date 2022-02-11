@@ -1,124 +1,208 @@
 from rest_framework.test import APITestCase
 from knox.models import AuthToken
 
-from users.models import User
+from project.setup_test import AbstractTestSetup
 
 
-class CustomAuthTest(APITestCase):
-    email = 's@a.com'
-    email2 = 'a@a.com'
-    pwd = '12345678'
-
+class CustomAuthTest(APITestCase, AbstractTestSetup):
     @classmethod
     def setUpTestData(self):
-        self.user = User.objects.create_user(self.email, self.pwd)
+        AbstractTestSetup.setup_user(self, signin=False)
 
     def test_signup(self):
-        # Successful signup. We only use `email2` once here.
-        response = self.client.post(
-            '/api/auth/signup/',
+        tests = [
             {
-                'email': self.email2,
-                'username': '123',
-                'password': self.pwd
-            }
-        )
-        self.assertEqual(response.status_code, 200,
-                         'Status code is expected to be 200 for successful signup, got %s.' % response.status_code)
-        self.assertIn('id', response.data)
-
-        # Sign up with existing email
-        response = self.client.post(
-            '/api/auth/signup/',
+                'data': {
+                    'email': 'test2@test.com',
+                    'username': '123',
+                    'password': '12345678'
+                },
+                'assertions': [
+                    # Valid email
+                    lambda res: self.assertIn('id', res.data),
+                    lambda res: self.assertNotIn('password', res.data)
+                ]
+            },
             {
-                'email': self.email,
-                'username': '123',
-                'password': self.pwd
-            }
-        )
-        self.assertEqual(response.status_code, 400,
-                         'Status code is expected be 400 for user-existed signup, got %s.' % response.status_code)
-
-    def test_signin_signout(self):
-        # Successful signin
-        response = self.client.post(
-            '/api/auth/signin/',
+                'data': {
+                    'email': self.user.email,
+                    'username': '123',
+                    'password': '12345678'
+                },
+                'assertions': [
+                    # Existing user
+                    lambda res: self.assertEqual(res.status_code, 400)
+                ]
+            },
             {
-                'username': self.email,
-                'password': self.pwd
-            }
-        )
-        self.assertTrue(
-            {'expiry', 'token'} <= set(response.data),
-            'Response data should contain "expiry" and "token", got %s.' % response.data
-        )
-        self.assertNotIn('password', response.data)
-        for field in ('token', 'expiry', 'id', 'shipping_addresses', 'orders', 'cart_items', 'fav_recipes'):
-            self.assertIn(field, response.data)
-
-        # Wrong credentials
-        response = self.client.post(
-            '/api/auth/signin/',
+                'data': {
+                    'email': 'sdas',
+                    'username': '123',
+                    'password': '12345678'
+                },
+                'assertions': [
+                    # Invalid email
+                    lambda res: self.assertEqual(res.status_code, 400)
+                ]
+            },
             {
-                'username': self.email,
-                'password': 'asdasdas'
-            }
-        )
-        self.assertGreaterEqual(response.status_code,
-                                400, 'Status code should be 4xx for invalid credentials, got %s.' % response.status_code)
+                'data': {
+                    'email': 'test2@test.com',
+                    'username': '123',
+                    'password': 'INSERT INTO users_user VALUES ()'
+                },
+                'assertions': [
+                    # Invalid password
+                    lambda res: self.assertEqual(res.status_code, 400)
+                ]
+            },
+        ]
 
-        # Invalid fields
-        response = self.client.post(
-            '/api/auth/signin/',
+        for test in tests:
+            res = self.client.post('/api/auth/signup/', test['data'])
+            for assertion in test['assertions']:
+                assertion(res)
+
+    def test_signin(self):
+        tests = [
             {
-                'email': self.email,
-                'password': 'asdasdas'
-            }
-        )
-        self.assertGreaterEqual(response.status_code,
-                                400, 'Status code should be 4xx for invalid fields, got %s.' % response.status_code)
+                'data': {
+                    'username': self.user.email,
+                    'password': '12345678'
+                },
+                'assertions': [
+                    # Successful signin
+                    lambda res: [self.assertIn(field, res.data) for field in (
+                        'token', 'id', 'username', 'email')],
+                    lambda res: self.assertNotIn('password', res.data)
+                ]
+            },
+            {
+                'data': {
+                    'username': self.user.email,
+                    'password': '1234567'
+                },
+                'assertions': [
+                    # Wrong credentials
+                    lambda res: self.assertEqual(res.status_code, 400)
+                ]
+            },
+            {
+                'data': {
+                    'email': self.user.email,
+                    'password': '12345678'
+                },
+                'assertions': [
+                    # Wrong field
+                    lambda res: self.assertGreaterEqual(res.status_code, 400)
+                ]
+            },
+        ]
 
-        # We only test valid user signout since it's fine to sign out a user not existing. Right now can't separate signin and signout tests.
-        # token = AuthToken.objects.get(user=self.user)
-        # response = self.client.post(
-        #     '/api/auth/signout/',
-        #     HTTP_AUTHORIZATION='Token ' + token.digest
-        # )
-        # self.assertEqual(response.status_code, 204,
-        #                  'Status code is expected to be 204 for successful signout, got %s.' % response.status_code)
+        for test in tests:
+            res = self.client.post('/api/auth/signin/', test['data'])
+            for assertion in test['assertions']:
+                assertion(res)
+
+    def test_signout(self):
+        tests = [
+            {
+                'auth': False,
+                'assertions': [
+                    # Invalid token
+                    lambda res: self.assertEqual(res.status_code, 401)
+                ]
+            },
+            {
+                'auth': True,
+                'assertions': [
+                    # Successful signout
+                    lambda res: self.assertEqual(res.status_code, 204)
+                ]
+            },
+        ]
+
+        # Generate token
+
+        instance, token = AuthToken.objects.create(self.user)
+        for test in tests:
+            if test['auth']:
+                self.client.credentials(
+                    HTTP_AUTHORIZATION='Token ' + token)
+            else:
+                self.client.credentials()
+
+            res = self.client.post('/api/auth/signout/')
+            for assertion in test['assertions']:
+                assertion(res)
 
     def test_change_password(self):
-        self.client.force_authenticate(user=self.user)
-
-        # Successful change.
-        response = self.client.post(
-            '/api/auth/change_password/',
+        tests = [
             {
-                'old_password': self.pwd,
-                'new_password': self.pwd
-            }
-        )
-        self.assertEqual(response.status_code, 200,
-                         'Status code is expected to be 200 for successful change password, got %s.' % response.status_code)
-
-        # Wrong old password.
-        response = self.client.post(
-            '/api/auth/change_password/',
+                'auth': False,
+                'data': {
+                    'old_password': '12345678',
+                    'new_password': '12345678',
+                },
+                'assertions': [
+                    # Should not valid to unauthed user
+                    lambda res: self.assertEqual(res.status_code, 401),
+                ]
+            },
             {
-                'old_password': 'dsdasds',
-                'new_password': self.pwd
-            }
-        )
-        self.assertEqual(response.status_code, 400,
-                         'Status code is expected to be 400 for wrong password, got %s.' % response.status_code)
-
-        # Invalid new password.
-        response = self.client.post(
-            '/api/auth/change_password/',
+                'auth': True,
+                'data': {
+                    'old_password': '12345678',
+                    'new_password': '12345678',
+                },
+                'assertions': [
+                    # Successful change password
+                    lambda res: self.assertEqual(res.status_code, 200),
+                ]
+            },
             {
-                'old_password': self.pwd,
-                'new_password': 'a-'
-            }
-        )
-        self.assertEqual(response.status_code, 400,
-                         'Status code is expected to be 400 for invalid password, got %s.' % response.status_code)
+                'auth': True,
+                'data': {
+                    'old_password': '1234567',
+                    'new_password': '12345678',
+                },
+                'assertions': [
+                    # Wrong old password
+                    lambda res: self.assertEqual(res.status_code, 400),
+                ]
+            },
+            {
+                'auth': True,
+                'data': {
+                    'old_passwor': '12345678',
+                    'new_password': '12345678',
+                },
+                'assertions': [
+                    # Wrong field
+                    lambda res: self.assertEqual(res.status_code, 400),
+                ]
+            },
+            {
+                'auth': True,
+                'data': {
+                    'old_password': '12345678',
+                    'new_password': '*-/--*',
+                },
+                'assertions': [
+                    # Invalid password
+                    lambda res: self.assertEqual(res.status_code, 400),
+                ]
+            },
+        ]
+
+        instance, token = AuthToken.objects.create(self.user)
+        for test in tests:
+            if test['auth']:
+                self.client.credentials(
+                    HTTP_AUTHORIZATION='Token ' + token)
+            else:
+                self.client.credentials()
+
+            res = self.client.post('/api/auth/change_password/', test['data'])
+            for assertion in test['assertions']:
+                assertion(res)
