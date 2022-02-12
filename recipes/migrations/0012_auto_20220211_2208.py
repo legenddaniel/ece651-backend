@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='nutrient',
             name='recipe',
-            field=models.OneToOneField(default=django.db.models.AutoField(), on_delete=django.db.models.deletion.CASCADE, to='recipes.recipe'),
+            field=models.OneToOneField(default=0, on_delete=django.db.models.deletion.CASCADE, to='recipes.recipe'),
             preserve_default=False,
         ),
     ]

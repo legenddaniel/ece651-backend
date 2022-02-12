@@ -48,7 +48,7 @@ class Product(models.Model):
     stock = models.IntegerField()
     on_promotion = models.BooleanField(default=False)
     in_recipe = models.BooleanField(default=False)
-    labels = models.ManyToManyField(ProductTag, null=True, blank=True)
+    labels = models.ManyToManyField(ProductTag, blank=True)
     last_order_timestamp = models.DateTimeField(auto_now=True)
     image_url = models.URLField(max_length=500)
     slug = models.SlugField(max_length=255)
