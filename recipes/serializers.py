@@ -62,8 +62,8 @@ class RecipeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super(RecipeSerializer, self).to_representation(instance)
         this_dict = {}
-        for x, y in data.pop('quantity').items():
-            this_dict.update({x:y})
+        for name, quant in data.pop('quantity').items():
+            this_dict.update({name:quant})
         data.get('details').update({'quantity':this_dict})
         return data
 

@@ -10,13 +10,10 @@ from rest_framework.exceptions import ParseError
 # Create your views here.
 class RecipesViewSet(viewsets.ViewSet):
     permission_classes = (AllowAny,)
-    def recipe_list(self, request):
+    def get_recipe(self, request):
         id = request.query_params.get('id', None)
         name = request.query_params.get('name', None)
         cuisine = request.query_params.get('cuisine', None)
-        print(len(request.query_params))
-        print(request.query_params)
-        print(id)
         if id:
             recipes = Recipe.objects.all().filter(id=id)
             serializer = RecipeSerializer(recipes, many=True)
