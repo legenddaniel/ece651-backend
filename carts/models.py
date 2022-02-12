@@ -15,4 +15,4 @@ class CartItem(TimeStampedModel):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return "{}, {}".format(self.user__id, self.product)
+        return "{}, {}".format(self.user, self.product)

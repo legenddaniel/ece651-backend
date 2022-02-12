@@ -1,3 +1,40 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework import status
 
-# Create your views here.
+from .serializers import CartItemSerializer
+from .models import CartItem
+
+
+class CartItemView(ModelViewSet):
+    serializer_class = CartItemSerializer
+
+    def get_queryset(self):
+        return CartItem.objects.select_related('product').filter(user=self.request.user)
+
+    # Add one item to cart
+    def create(self, request):
+        serializer = self.serializer_class(
+            data={'user': request.user.id, **request.data}, context={'user': request.user})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return self.list(request)
+
+    # Update one cart item (e.g. quantity). Do deletion if quantity goes 0.
+    def partial_update(self, request, cart_item=None):
+        items = CartItem.objects.filter(user=request.user, id=cart_item)
+        if not items.count():
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if 'quantity' in request.data and request.data['quantity'] == 0:
+            items.delete()
+        else:
+            items.update(**request.data)
+
+        return self.list(request)
+
+    # Clear cart for current user
+    def destroy(self, request):
+        self.get_queryset().delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

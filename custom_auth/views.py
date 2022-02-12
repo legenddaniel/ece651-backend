@@ -29,9 +29,9 @@ class LoginView(KnoxLoginView):
 
             # Get primitive values
             queryset = getattr(user, field.name, None)
-            if hasattr(queryset, 'all'):
+            if hasattr(queryset, 'values'):
                 # Get object values
-                queryset = queryset.all()
+                queryset = queryset.values()
 
             user_res[field.name] = queryset
 
