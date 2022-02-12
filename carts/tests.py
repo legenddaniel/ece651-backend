@@ -27,8 +27,6 @@ class CartTest(APITestCase, AbstractTestSetup):
                     # Should contain some fields
                     lambda res: [self.assertIn(field, res.data[0])
                                  for field in ('id', 'product', 'quantity')],
-                    lambda res: [self.assertIn(field, res.data[0]['product']) for field in (
-                        'id', 'name', 'price', 'stock', 'image_url')],
 
                     # Should belong to current user
                     lambda res: self.assertEqual(
@@ -54,7 +52,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': False,
                 'data': {
-                    "product_id": 1,
+                    "product": 1,
                     "quantity": 1
                 },
                 'assertions': [
@@ -65,7 +63,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product_id": 123131,
+                    "product": 123131,
                     "quantity": 1
                 },
                 'assertions': [
@@ -76,20 +74,20 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product_id": 1,
+                    "product": 1,
                     "quantity": 1
                 },
                 'assertions': [
                     # We have product 1 in cart, so should update the quantity
                     lambda res: self.assertEqual(len(res.data), 2),
                     lambda res: self.assertEqual(
-                        res.data[0]['quantity'], self.cart_items[0]['quantity'] + 1),
+                        res.data[0]['quantity'], self.cart_items[0].quantity + 1),
                 ]
             },
             {
                 'auth': True,
                 'data': {
-                    "product_id": 3,
+                    "product": 3,
                     "quantity": 1
                 },
                 'assertions': [
@@ -101,7 +99,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product": 3,
+                    "product_id": 3,
                     "quantity": 1
                 },
                 'assertions': [
