@@ -18,6 +18,13 @@ app_1  | Quit the server with CONTROL-C.
 - Run `./leh` for shell command helper. `leh` is a developer-friendly shell script with some commonly-used commands. Currently django commands can only run using `leh`.
 - You may need to clean dangling images in docker from time to time. They are usually marked as `<none>`.
 
+# Product API
+
+- Retrieve product lists: `localhost:8000/api/products`
+- Retrieve product by product id: `localhost:8000/api/products?id=<id>`
+- Search products by product name (full text search allowed): `localhost:8000/api/products?name=<name/part-of-the-name>`
+- Retrieve product by category: `localhost:8000/api/products?category=<category>`
+
 # Recipe API
 
 - Retrieve recipe lists: `localhost:8000/api/recipes`
