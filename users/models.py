@@ -43,7 +43,7 @@ class User(AbstractUser, UUIDModel):
     first_name = None
     last_name = None
 
-    fav_recipes = models.ManyToManyField(Recipe)
+    fav_recipes = models.ManyToManyField(Recipe, blank=True)
 
     objects = CustomAccountManager()
 

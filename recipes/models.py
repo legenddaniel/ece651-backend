@@ -22,7 +22,7 @@ class Recipe(models.Model):
     description = models.TextField(blank=True)
     rating = models.DecimalField('rating', max_digits=3, decimal_places=1)
     cuisine = models.CharField(max_length=30, choices=CUISINE)    #incoming choices from ML team
-    label = models.ManyToManyField(Label, null=True, blank=True)
+    label = models.ManyToManyField(Label, blank=True)
     image_url = models.URLField(max_length=500)
     products = models.ManyToManyField(Product, through='ProductQuantity', through_fields=('recipe','product'), related_name='recipe_products')
     instructions = ArrayField(models.CharField(max_length=200), null=True, blank=True)
