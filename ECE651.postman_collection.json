@@ -1,10 +1,240 @@
 {
 	"info": {
-		"_postman_id": "cf36df62-c10d-4f95-a6b1-44818268459b",
+		"_postman_id": "55a7554b-c6b1-4f4f-819f-79f8b2855bdd",
 		"name": "ECE651",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "cart - get all items",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"/* \r",
+							"get: get all items\r",
+							"post: add item\r",
+							"patch: change item, remove if change quantity to 0\r",
+							"delete: remove all items (use patch + quantity:0 to remove single item)\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 657e21db885e02486e0e4cbfadb9cff7374d818ef497b4c92e026d07ce7bafa6",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8000/api/cart/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"cart",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cart - create new item",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"/* \r",
+							"get: get all items\r",
+							"post: add item\r",
+							"patch: change item, remove if change quantity to 0\r",
+							"delete: remove all items (use patch + quantity:0 to remove single item)\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 657e21db885e02486e0e4cbfadb9cff7374d818ef497b4c92e026d07ce7bafa6",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product\": 1,\r\n    \"quantity\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/cart/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"cart",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cart - modify one item",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"/* \r",
+							"get: get all items\r",
+							"post: add item\r",
+							"put: change item, remove if change quantity to 0\r",
+							"delete: remove all items (use patch + quantity:0 to remove single item)\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 657e21db885e02486e0e4cbfadb9cff7374d818ef497b4c92e026d07ce7bafa6",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/cart/51/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"cart",
+						"51",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cart - clear cart",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"/* \r",
+							"get: get all items\r",
+							"post: add item\r",
+							"patch: change item, remove if change quantity to 0\r",
+							"delete: remove all items (use patch + quantity:0 to remove single item)\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 657e21db885e02486e0e4cbfadb9cff7374d818ef497b4c92e026d07ce7bafa6",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/cart/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"cart",
+						""
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "signin",
 			"event": [
@@ -35,7 +265,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"s@a.com\",\r\n    \"password\": \"12345678\"\r\n}",
+					"raw": "{\r\n    \"username\": \"a@a.com\",\r\n    \"password\": \"12345678\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -108,7 +338,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token 15a79446ea3bdd9cd869f3c8d42871fe6edd7272dfa0f3d52c26f34fd9a6fe1b",
+						"value": "Token c2a00fc4ca757e258fc165c6ebf767445aa2ce7b3041752d6b2835ddeb44edad",
 						"type": "text"
 					}
 				],
@@ -157,7 +387,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token 85a87ca34749d3a2cdc0689dd0ba298f4baa25bb746a6c4f681bdbdf1ffa8ca2",
+						"value": "Token 4b11c7854e0e7013e95978ac6d7e6e875ebb2fb6b87b10b4df15ab006f63e8a3",
 						"type": "text"
 					}
 				],
@@ -181,6 +411,129 @@
 						"auth",
 						"change_password",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get product lists",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/products",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search products by keywords",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/products/?keywords=lettuce",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products",
+						""
+					],
+					"query": [
+						{
+							"key": "keywords",
+							"value": "lettuce"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "retrieve product details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/products/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get products by category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/products/category/vegetable",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products",
+						"category",
+						"vegetable"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get recipe list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/recipes",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"recipes"
 					]
 				}
 			},
