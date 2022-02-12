@@ -18,6 +18,19 @@ app_1  | Quit the server with CONTROL-C.
 - Run `./leh` for shell command helper. `leh` is a developer-friendly shell script with some commonly-used commands. Currently django commands can only run using `leh`.
 - You may need to clean dangling images in docker from time to time. They are usually marked as `<none>`.
 
+---
+
+__*: APIs that need auth token in the headers e.g. `{ Authorization: 'Token xxxxxxxxx' }`__
+
+__[function]: [endpoint] [method] [[payload] [comment]]__
+
+# Auth API
+
+- Sign in: `/api/auth/signin/` POST `{ username: 'ece@gmail.com', password: '12345678' }`
+- *Sign out: `/api/auth/signout/` POST 
+- Sign up: `/api/auth/signup/` POST `{ username: ece, email: ece@gmail.com, password: '12345678' }`
+- *Change password: `/api/auth/change_password/` POST `{ old_password: '12345678', new_password: '12345678' }`
+
 # Product API
 
 - Retrieve product lists: `localhost:8000/api/products`
@@ -31,3 +44,10 @@ app_1  | Quit the server with CONTROL-C.
 - Retrieve recipe by recipe id: `localhost:8000/api/recipes?id=<id>`
 - Search recipe by recipe name (full text search allowed): `localhost:8000/api/recipes?name=<name/part-of-the-name>`
 - Retrieve recipe by cuisine: `localhost:8000/api/recipes?cuisine=<cuisine>`
+
+# Cart API
+
+- *Retrieve cart items: `/api/cart/` GET
+- *Create new item: `/api/cart/` POST `{ product: 2, quantity: 1 }` (product -> product_id)
+- *Update an item: `/api/cart/<item_id>/` PATCH `{ quantity: 2 }` Wse this with `{ quantity: 0 }` to remove cart item.
+- *Clear cart: `/api/cart/` DELETE
