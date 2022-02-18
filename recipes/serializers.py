@@ -49,7 +49,6 @@ class RecipeSerializer(serializers.ModelSerializer):
     def get_details(self, obj):
         return {'instruction': obj.instructions,
                 'nutrients': RecipeNutrientSerializer(obj.nutrient).data,
-                # 'quantity': RecipeQuantitySerializer(obj.productquantity_set, many=True).data,
                 }
 
     def get_alternate_name(self, obj):
