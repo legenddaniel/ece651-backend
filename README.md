@@ -33,17 +33,17 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 
 # Product API
 
-- Retrieve product lists: `localhost:8000/api/products`
-- Retrieve product by product id: `localhost:8000/api/products?id=<id>`
-- Search products by product name (full text search allowed): `localhost:8000/api/products?name=<name/part-of-the-name>`
-- Retrieve product by category: `localhost:8000/api/products?category=<category>`
+- Retrieve product lists: `/api/products`
+- Retrieve product by product id: `/api/products?id=<id>`
+- Search products by product name (full text search allowed): `/api/products?name=<name/part-of-the-name>`
+- Retrieve product by category: `/api/products?category=<category>`
 
 # Recipe API
 
-- Retrieve recipe lists: `localhost:8000/api/recipes`
-- Retrieve recipe by recipe id: `localhost:8000/api/recipes?id=<id>`
-- Search recipe by recipe name (full text search allowed): `localhost:8000/api/recipes?name=<name/part-of-the-name>`
-- Retrieve recipe by cuisine: `localhost:8000/api/recipes?cuisine=<cuisine>`
+- Retrieve recipe lists: `/api/recipes`
+- Retrieve recipe by recipe id: `/api/recipes?id=<id>`
+- Search recipe by recipe name (full text search allowed): `/api/recipes?name=<name/part-of-the-name>`
+- Retrieve recipe by cuisine: `/api/recipes?cuisine=<cuisine>`
 
 # Cart API
 
