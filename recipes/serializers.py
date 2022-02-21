@@ -48,6 +48,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def get_details(self, obj):
         return {'instruction': obj.instructions,
+                'ingredients_detail': obj.ingredients_detail,
                 'nutrients': RecipeNutrientSerializer(obj.nutrient).data,
                 }
 
