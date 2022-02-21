@@ -7,7 +7,7 @@ from .models import Recipe, ProductQuantity, Label, Nutrient
 class RecipeAdmin(admin.ModelAdmin, DynamicArrayMixin):
     list_display = ['name', 'description', 'rating',
                     'cuisine',
-                    'instructions', 'last_purchase_made',
+                    'instructions', 'ingredients_detail', 'last_purchase_made',
                     'total_reviews']
     list_editable = ['cuisine']
     prepopulated_fields = {'slug': ('name',)}
