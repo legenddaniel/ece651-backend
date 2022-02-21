@@ -9,6 +9,7 @@ from decimal import Decimal
 from .serializers import OrderSerializer, OrderItemSerializer
 from .models import Order
 from products.models import Product
+from carts.models import CartItem
 
 
 class OrderView(ModelViewSet):
@@ -35,6 +36,8 @@ class OrderView(ModelViewSet):
     # Create an order
     @transaction.atomic
     def create(self, request):
+
+        # Create order
         order = {
             "user": request.user.id,
             "STATUS": request.data['status'] or 'unpaid',
@@ -47,21 +50,30 @@ class OrderView(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
 
+        # Create order items and bind to the order
         order_items = request.data['order_items']
         subtotal = Decimal(0)
+        products = set()
         for item in order_items:
             item['unit_price'] = Product.objects.get(id=item['product']).price
             item['order'] = order.id
             subtotal += item['quantity'] * item['unit_price']
+            products.add(item['product'])
 
         serializer = OrderItemSerializer(data=order_items, many=True)
         serializer.is_valid(raise_exception=True)
         order_items = serializer.save()
 
+        # Update the order money info
         TAX = Decimal(0.13)
         order.subtotal = subtotal
         order.tax = subtotal * TAX
         order.total = subtotal * (1 + TAX)
         order.save()
+
+        # Remove cart items
+        cart_items = CartItem.objects.filter(
+            user=request.user, product__in=products)
+        cart_items.delete()
 
         return self.list(request)
