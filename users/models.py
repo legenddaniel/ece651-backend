@@ -60,16 +60,15 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
         # ...more
 
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='shipping_addresses')
+        User, on_delete=models.CASCADE, related_name='shipping_address')
 
     full_name = models.CharField(max_length=50, validators=[
                                  CustomValidator.alphanumeric])
     phone_number = models.CharField(max_length=10, validators=[
                                     CustomValidator.phone_number])
     email = models.EmailField()
-    address1 = models.CharField(max_length=50, validators=[
-                                CustomValidator.alphanumeric])
-    address2 = models.CharField(max_length=50, default='', validators=[
+    
+    address = models.CharField(max_length=50, default='', validators=[
                                 CustomValidator.alphanumeric])
     province = models.CharField(max_length=2, choices=Province.choices)
 
