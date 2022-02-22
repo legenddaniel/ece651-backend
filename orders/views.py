@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from django.db import transaction
+from django.core.exceptions import FieldDoesNotExist
 
 from decimal import Decimal
 
@@ -20,6 +21,8 @@ class OrderView(ModelViewSet):
 
     def retrieve(self, request, order_id=None):
         orders = Order.objects.filter(user=request.user, id=order_id)
+        if not orders.count():
+            return Response('Order not found', status=status.HTTP_404_NOT_FOUND)
 
         res = orders.values()[0]
         res['order_items'] = orders[0].order_items.values()
@@ -33,7 +36,13 @@ class OrderView(ModelViewSet):
                 return Response('Invalid status.', status=status.HTTP_400_BAD_REQUEST)
 
         order = Order.objects.filter(user=request.user, id=order_id)
-        order.update(**request.data)
+        if not order.count():
+            return Response('Order not found', status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            order.update(**request.data)
+        except FieldDoesNotExist:
+            return Response('Invalid field', status=status.HTTP_400_BAD_REQUEST)
 
         return self.list(request)
 
@@ -61,9 +70,16 @@ class OrderView(ModelViewSet):
         qtys = []
         for item in order_items:
             # Verify stock is enough
-            product = Product.objects.get(id=item['product'])
+            product = Product.objects.filter(id=item['product'])
+            if not product.count():
+                transaction.set_rollback(True)
+                return Response('Product id %s does not exist' % item['product'], status=status.HTTP_400_BAD_REQUEST)
+
+            product = product[0]
             if product.stock < item['quantity']:
+                transaction.set_rollback(True)
                 return Response('Not enough stock for product id %s' % item['product'], status=status.HTTP_400_BAD_REQUEST)
+
             products.append(product)
             qtys.append(item['quantity'])
 
