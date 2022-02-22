@@ -45,9 +45,16 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 - Search recipe by recipe name (full text search allowed): `/api/recipes?name=<name/part-of-the-name>`
 - Retrieve recipe by cuisine: `/api/recipes?cuisine=<cuisine>`
 
-# Cart API
+# Cart API (current user)
 
 - *Retrieve cart items: `/api/cart/` GET
 - *Create new item: `/api/cart/` POST `{ product: 2, quantity: 1 }` (product -> product_id)
 - *Update an item: `/api/cart/<item_id>/` PATCH `{ quantity: 2 }` Wse this with `{ quantity: 0 }` to remove cart item.
 - *Clear cart: `/api/cart/` DELETE
+
+# Order API (current user)
+
+- *Retrieve orders: `/api/orders/` GET
+- *Retrieve an order: `/api/orders/<order_id>/` GET
+- *Create new order: `/api/orders/` POST `{ status: 'unpaid', order_items: [{ product: 1, quantity: 2 }, { product: 2, quantity: 1 }] }` (product -> product_id)
+- *Update an order: `/api/orders/<order_id>/` PATCH `{ status: 'cancelled' }` Currently regard `status=cancelled` as deleting order
