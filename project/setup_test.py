@@ -75,3 +75,53 @@ class AbstractTestSetup(ABC):
                 quantity=6
             ),
         ])
+
+    @staticmethod
+    def setup_orders(self):
+        if not self.user:
+            raise ValueError('You need a user to set up order')
+        if not self.products or not len(self.products):
+            raise ValueError('You need a product to set up order')
+
+        from orders.models import Order, OrderItem
+        from decimal import Decimal
+
+        subtotal = self.products[0].price + self.products[1].price
+        order = {
+            'user': self.user,
+            'status': 'unpaid',
+            'subtotal': subtotal,
+            'tax': subtotal * Decimal(0.13),
+            'total': subtotal * Decimal(1.13),
+        }
+        self.orders = Order.objects.bulk_create([
+            Order(**order),
+            Order(**order),
+        ])
+
+        OrderItem.objects.bulk_create([
+            OrderItem(
+                order=self.orders[0],
+                product=self.products[0],
+                quantity=1,
+                unit_price=self.products[0].price,
+            ),
+            OrderItem(
+                order=self.orders[0],
+                product=self.products[1],
+                quantity=1,
+                unit_price=self.products[1].price,
+            ),
+            OrderItem(
+                order=self.orders[1],
+                product=self.products[0],
+                quantity=1,
+                unit_price=self.products[0].price,
+            ),
+            OrderItem(
+                order=self.orders[1],
+                product=self.products[1],
+                quantity=1,
+                unit_price=self.products[1].price,
+            ),
+        ])

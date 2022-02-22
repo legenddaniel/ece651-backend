@@ -1,28 +1,31 @@
 from django.db import models
-from django.utils import timezone
-from products.models import Product
+
+from model_utils.models import TimeStampedModel, StatusModel
+from model_utils import Choices
+
 from users.models import User
-# Create your models here.
+from products.models import Product
 
 
-class Order(models.Model):
-    order_id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='orders')
-    timestamp = models.DateTimeField('order time', default=timezone.now)
-    total_price = models.DecimalField(
-        'total price', max_digits=20, decimal_places=2)
+class Order(TimeStampedModel, StatusModel):
+    STATUS = Choices('unpaid', 'paid', 'completed', 'cancelled')
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+    tax = models.DecimalField(max_digits=10, decimal_places=2)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return "{}, {}".format(self.user_id, self.order_id)
+        return "{}, {}".format(self.user, self.id)
 
 
-class OrderProductList(models.Model):
-    order_id = models.ForeignKey(
+class OrderItem(models.Model):
+    order = models.ForeignKey(
         Order, on_delete=models.CASCADE, related_name='order_items')
-    product_id = models.ForeignKey(
+    product = models.ForeignKey(
         Product, null=True, blank=True, on_delete=models.SET_NULL)
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField()
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return str(self.order_id) + " - " + str(self.product_id)
+        return str(self.order) + " - " + str(self.product)
