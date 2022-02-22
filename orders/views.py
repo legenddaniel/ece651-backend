@@ -24,6 +24,7 @@ class OrderView(ModelViewSet):
         return Response(order)
 
     def partial_update(self, request, order_id=None):
+        # We don't restore the stocks if order cancelled
         if 'status' in request.data:
             if request.data['status'] not in ('unpaid', 'paid', 'completed', 'cancelled'):
                 return Response('Invalid status.', status=status.HTTP_400_BAD_REQUEST)
@@ -53,21 +54,28 @@ class OrderView(ModelViewSet):
         # Create order items and bind to the order
         order_items = request.data['order_items']
         subtotal = Decimal(0)
-        products = set()
+        products = []
+        qtys = []
         for item in order_items:
             # Verify stock is enough
             product = Product.objects.get(id=item['product'])
             if product.stock < item['quantity']:
                 return Response('Not enough stock for product id %s' % item['product'], status=status.HTTP_400_BAD_REQUEST)
+            products.append(product)
+            qtys.append(item['quantity'])
 
             item['unit_price'] = product.price
             item['order'] = order.id
             subtotal += item['quantity'] * item['unit_price']
-            products.add(item['product'])
 
         serializer = OrderItemSerializer(data=order_items, many=True)
         serializer.is_valid(raise_exception=True)
         order_items = serializer.save()
+
+        # Reduce stocks
+        for i in range(len(products)):
+            products[i].stock -= qtys[i]
+            Product.objects.bulk_update(products, ['stock'])
 
         # Update the order money info
         TAX = Decimal(0.13)
