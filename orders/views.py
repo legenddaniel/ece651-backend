@@ -19,9 +19,12 @@ class OrderView(ModelViewSet):
         return Order.objects.filter(user=self.request.user)
 
     def retrieve(self, request, order_id=None):
-        order = Order.objects.filter(
-            user=request.user, id=order_id).values()[0]
-        return Response(order)
+        orders = Order.objects.filter(user=request.user, id=order_id)
+
+        res = orders.values()[0]
+        res['order_items'] = orders[0].order_items.values()
+
+        return Response(res)
 
     def partial_update(self, request, order_id=None):
         # We don't restore the stocks if order cancelled
