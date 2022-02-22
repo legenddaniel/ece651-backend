@@ -25,7 +25,7 @@ class CartItemView(ModelViewSet):
     def partial_update(self, request, cart_item=None):
         items = CartItem.objects.filter(user=request.user, id=cart_item)
         if not items.count():
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response('Cannot find this cart item.', status=status.HTTP_404_NOT_FOUND)
 
         if 'quantity' in request.data and request.data['quantity'] == 0:
             items.delete()

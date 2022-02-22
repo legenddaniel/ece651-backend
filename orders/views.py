@@ -26,7 +26,7 @@ class OrderView(ModelViewSet):
     def partial_update(self, request, order_id=None):
         if 'status' in request.data:
             if request.data['status'] not in ('unpaid', 'paid', 'completed', 'cancelled'):
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response('Invalid status.', status=status.HTTP_400_BAD_REQUEST)
 
         order = Order.objects.filter(user=request.user, id=order_id)
         order.update(**request.data)
@@ -55,7 +55,12 @@ class OrderView(ModelViewSet):
         subtotal = Decimal(0)
         products = set()
         for item in order_items:
-            item['unit_price'] = Product.objects.get(id=item['product']).price
+            # Verify stock is enough
+            product = Product.objects.get(id=item['product'])
+            if product.stock < item['quantity']:
+                return Response('Not enough stock for product id %s' % item['product'], status=status.HTTP_400_BAD_REQUEST)
+
+            item['unit_price'] = product.price
             item['order'] = order.id
             subtotal += item['quantity'] * item['unit_price']
             products.add(item['product'])
