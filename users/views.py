@@ -1,3 +1,4 @@
+from ast import Add
 from django.shortcuts import redirect, render
 from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
@@ -13,19 +14,20 @@ from .serializers import AddressSerializers,FavouriteSerializers
 class AddressView(viewsets.ViewSet):
     #permission_classes = (AllowAny,)
     
+    
     def get(self,request):
         # if not request.user.is_authenticated:
         #     return redirect("login")
         
-        origin_address = ShippingAddress.objects.all()
+        origin_address = ShippingAddress.objects.filter(user = self.request.user)
         
         serializer = AddressSerializers(origin_address,many = True)
         return Response(serializer.data)
     
     def post(self,request):
         
-        receiver = request.user
-        ship_add = ShippingAddress(user= receiver)
+        
+        ship_add = ShippingAddress.objects.filter(user = self.request.user).first()
         
         serializer = AddressSerializers(ship_add, data = request.data) 
         
@@ -36,19 +38,21 @@ class AddressView(viewsets.ViewSet):
     
     
     
-    def put(self,request):
+    def put(self,request, *args, **kwargs):
         
-        serializer = AddressSerializers(data = request.data)  #instance = new_add
-        data = {}
+        ship_update = ShippingAddress.objects.filter(user = self.request.user).first()
+        serializer = AddressSerializers(ship_update, data = request.data)  #instance = new_add
+        message= {}
         
         if serializer.is_valid():
             serializer.save()
-            data["success"] = "updated"
-            return Response(data = data)
+            message["success"] = "updated"
+            return Response(data = message)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     
     def delete(self,request):
         pass
+        
     
 
 class FavouriteView(viewsets.ViewSet):

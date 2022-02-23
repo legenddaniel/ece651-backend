@@ -9,6 +9,9 @@ class AddressSerializers(serializers.ModelSerializer):
         model = ShippingAddress
         fields = ['full_name','phone_number','email','address','province']
         #fields = '__all__'
+        extra_kwargs = {
+            'user':{'required':True},
+        }
         
 
 
