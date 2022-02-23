@@ -2,6 +2,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.core.exceptions import FieldDoesNotExist
+
 from .serializers import CartItemSerializer
 from .models import CartItem
 
@@ -14,23 +16,25 @@ class CartItemView(ModelViewSet):
 
     # Add one item to cart
     def create(self, request):
-        serializer = self.serializer_class(
-            data={'user': request.user.id, **request.data}, context={'user': request.user})
+        serializer = CartItemSerializer(data={'user': request.user.id, **request.data})
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return self.list(request)
 
     # Update one cart item (e.g. quantity). Do deletion if quantity goes 0.
-    def partial_update(self, request, cart_item=None):
-        items = CartItem.objects.filter(user=request.user, id=cart_item)
+    def partial_update(self, request, pk=None):
+        items = CartItem.objects.filter(user=request.user, id=pk)
         if not items.count():
             return Response('Cannot find this cart item.', status=status.HTTP_404_NOT_FOUND)
 
         if 'quantity' in request.data and request.data['quantity'] == 0:
             items.delete()
         else:
-            items.update(**request.data)
+            try:
+                items.update(**request.data)
+            except FieldDoesNotExist:
+                return Response('Invalid field', status=status.HTTP_400_BAD_REQUEST)
 
         return self.list(request)
 

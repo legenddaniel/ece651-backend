@@ -8,7 +8,7 @@ urlpatterns = [
         'post': 'create',
         'delete': 'destroy'
     })),
-    path(r'<int:cart_item>/', CartItemView.as_view({
+    path(r'<int:pk>/', CartItemView.as_view({
         'patch': 'partial_update',
     })),
 ]

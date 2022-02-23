@@ -48,7 +48,7 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 # Cart API (current user)
 
 - *Retrieve cart items: `/api/cart/` GET
-- *Create new item: `/api/cart/` POST `{ product: 2, quantity: 1 }` (product -> product_id)
+- *Create new item: `/api/cart/` POST `{ product_id: 2, quantity: 1 }`
 - *Update an item: `/api/cart/<item_id>/` PATCH `{ quantity: 2 }` Wse this with `{ quantity: 0 }` to remove cart item.
 - *Clear cart: `/api/cart/` DELETE
 
@@ -56,5 +56,5 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 
 - *Retrieve orders: `/api/orders/` GET
 - *Retrieve an order: `/api/orders/<order_id>/` GET
-- *Create new order: `/api/orders/` POST `{ status: 'unpaid', order_items: [{ product: 1, quantity: 2 }, { product: 2, quantity: 1 }] }` (product -> product_id)
+- *Create new order: `/api/orders/` POST `{ status: 'unpaid', order_items: [{ product_id: 1, quantity: 2 }, { product_id: 2, quantity: 1 }] }`
 - *Update an order: `/api/orders/<order_id>/` PATCH `{ status: 'cancelled' }` Currently regard `status=cancelled` as deleting order
