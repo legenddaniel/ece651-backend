@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import User, ShippingAddress
 
-
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
@@ -34,3 +33,7 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(ShippingAddress)
 class CustomShippingAddressAdmin(admin.ModelAdmin):
     pass
+
+# @admin.register(UserFavorite)
+# class CustomFavouriteAdmin(admin.ModelAdmin):
+#     pass

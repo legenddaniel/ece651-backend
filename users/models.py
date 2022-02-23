@@ -59,7 +59,7 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
         ON = 'ON', _('ON')
         # ...more
 
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='shipping_address')
 
     full_name = models.CharField(max_length=50, validators=[
@@ -68,9 +68,17 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
                                     CustomValidator.phone_number])
     email = models.EmailField()
     
-    address = models.CharField(max_length=50, default='', validators=[
+    address = models.CharField(max_length=50, validators=[
                                 CustomValidator.alphanumeric])
     province = models.CharField(max_length=2, choices=Province.choices)
 
     def __str__(self):
         return 'Shipping Addresses'
+
+
+
+# class UserFavorite(models.Model):
+#     user = models.ManyToManyField(User, related_name='favourite_recipes')
+    
+#     def __str__(self):
+#         return 'Favourite Recipes'

@@ -9,3 +9,10 @@ class AddressSerializers(serializers.ModelSerializer):
         model = ShippingAddress
         fields = ['full_name','phone_number','email','address','province']
         #fields = '__all__'
+        
+
+
+# class FavouriteSerializers(serializers.ModelSerializer):
+#     class Meta:
+#         model = UserFavorite
+        

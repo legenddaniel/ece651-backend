@@ -5,8 +5,9 @@ from rest_framework.response import Response
 from django.contrib.postgres.search import SearchVector, TrigramSimilarity
 from rest_framework.exceptions import ParseError
 from rest_framework.views import APIView
-from .models import ShippingAddress
-from .serializers import AddressSerializers
+from .models import ShippingAddress,User
+from recipes.models import Recipe
+from .serializers import AddressSerializers,FavouriteSerializers
 
 
 class AddressView(viewsets.ViewSet):
@@ -48,3 +49,25 @@ class AddressView(viewsets.ViewSet):
     
     def delete(self,request):
         pass
+    
+
+class FavouriteView(viewsets.ViewSet):
+    
+    serializer_class = FavouriteSerializers
+    def get_fav(self,request):
+        favourite_list = User.objects.all()    #Recipe.objects.all()
+        return favourite_list
+    
+    def create(self,request, *args, **kwargs):
+        
+        serializer = AddressSerializers(data = request.data) 
+        
+        data = request.data
+        
+        for recipe_temp in data["fav_recipes"]:
+            recipe_obj  = Recipe.objects.get(name = recipe_temp["name"])
+            User.fav_recipes.add(recipe_obj)
+        
+        
+        
+        return Response(serializer)
