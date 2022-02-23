@@ -7,7 +7,7 @@ urlpatterns = [
         'get': 'list',
         'post': 'create',
     })),
-    path(r'<int:order_id>/', OrderView.as_view({
+    path(r'<int:pk>/', OrderView.as_view({
         'get': 'retrieve',
         'patch': 'partial_update',
     })),

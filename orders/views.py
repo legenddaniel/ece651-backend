@@ -17,25 +17,15 @@ class OrderView(ModelViewSet):
     serializer_class = OrderSerializer
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        return Order.objects.prefetch_related('order_items').filter(user=self.request.user)
 
-    def retrieve(self, request, order_id=None):
-        orders = Order.objects.filter(user=request.user, id=order_id)
-        if not orders.count():
-            return Response('Order not found', status=status.HTTP_404_NOT_FOUND)
-
-        res = orders.values()[0]
-        res['order_items'] = orders[0].order_items.values()
-
-        return Response(res)
-
-    def partial_update(self, request, order_id=None):
+    def partial_update(self, request, pk=None):
         # We don't restore the stocks if order cancelled
         if 'status' in request.data:
             if request.data['status'] not in ('unpaid', 'paid', 'completed', 'cancelled'):
                 return Response('Invalid status.', status=status.HTTP_400_BAD_REQUEST)
 
-        order = Order.objects.filter(user=request.user, id=order_id)
+        order = Order.objects.filter(user=request.user, id=pk)
         if not order.count():
             return Response('Order not found', status=status.HTTP_404_NOT_FOUND)
 
@@ -70,15 +60,15 @@ class OrderView(ModelViewSet):
         qtys = []
         for item in order_items:
             # Verify stock is enough
-            product = Product.objects.filter(id=item['product'])
+            product = Product.objects.filter(id=item['product_id'])
             if not product.count():
                 transaction.set_rollback(True)
-                return Response('Product id %s does not exist' % item['product'], status=status.HTTP_400_BAD_REQUEST)
+                return Response('Product id %s does not exist' % item['product_id'], status=status.HTTP_400_BAD_REQUEST)
 
             product = product[0]
             if product.stock < item['quantity']:
                 transaction.set_rollback(True)
-                return Response('Not enough stock for product id %s' % item['product'], status=status.HTTP_400_BAD_REQUEST)
+                return Response('Not enough stock for product id %s' % item['product_id'], status=status.HTTP_400_BAD_REQUEST)
 
             products.append(product)
             qtys.append(item['quantity'])

@@ -35,6 +35,10 @@ class OrderTest(APITestCase, AbstractTestSetup):
                     # Should contain order item details
                     lambda res: [self.assertIn(field, res.data[0]['order_items'][0])
                                  for field in ('id', 'quantity', 'unit_price', 'product')],
+
+                    # Should contain product details
+                    lambda res: [self.assertIn(field, res.data[0]['order_items'][0]['product'])
+                                 for field in ('id', 'name', 'price', 'stock', 'image_url', 'description')],
                 ]
             },
         ]
@@ -81,11 +85,15 @@ class OrderTest(APITestCase, AbstractTestSetup):
 
                     # Should belong to current user
                     lambda res: self.assertEqual(
-                        res.data['user_id'], self.user.id),
+                        res.data['user'], self.user.id),
 
                     # Should contain order item details
                     lambda res: [self.assertIn(field, res.data['order_items'][0])
-                                 for field in ('id', 'quantity', 'unit_price', 'product_id')],
+                                 for field in ('id', 'quantity', 'unit_price', 'product')],
+
+                    # Should contain product details
+                    lambda res: [self.assertIn(field, res.data['order_items'][0]['product'])
+                                 for field in ('id', 'name', 'price', 'stock', 'image_url', 'description')],
                 ]
             },
         ]
@@ -110,11 +118,11 @@ class OrderTest(APITestCase, AbstractTestSetup):
                     "status": "unpaid",
                     "order_items": [
                         {
-                            "product": self.products[0].id,
+                            "product_id": self.products[0].id,
                             "quantity": 1
                         },
                         {
-                            "product": self.products[1].id,
+                            "product_id": self.products[1].id,
                             "quantity": 2
                         }
                     ]
@@ -130,11 +138,11 @@ class OrderTest(APITestCase, AbstractTestSetup):
                     "status": "unpaid",
                     "order_items": [
                         {
-                            "product": 1342,
+                            "product_id": 1342,
                             "quantity": 1
                         },
                         {
-                            "product": self.products[1].id,
+                            "product_id": self.products[1].id,
                             "quantity": 2
                         }
                     ]
@@ -150,11 +158,11 @@ class OrderTest(APITestCase, AbstractTestSetup):
                     "status": "unpaid",
                     "order_items": [
                         {
-                            "product": self.products[0].id,
+                            "product_id": self.products[0].id,
                             "quantity": 15345435453
                         },
                         {
-                            "product": self.products[1].id,
+                            "product_id": self.products[1].id,
                             "quantity": 2
                         }
                     ]
@@ -170,11 +178,11 @@ class OrderTest(APITestCase, AbstractTestSetup):
                     "status": "asdasdda",
                     "order_items": [
                         {
-                            "product": self.products[0].id,
+                            "product_id": self.products[0].id,
                             "quantity": -1
                         },
                         {
-                            "product": self.products[1].id,
+                            "product_id": self.products[1].id,
                             "quantity": 2
                         }
                     ]
@@ -190,11 +198,11 @@ class OrderTest(APITestCase, AbstractTestSetup):
                     "status": "unpaid",
                     "order_items": [
                         {
-                            "product": self.products[0].id,
+                            "product_id": self.products[0].id,
                             "quantity": 1
                         },
                         {
-                            "product": self.products[1].id,
+                            "product_id": self.products[1].id,
                             "quantity": 2
                         }
                     ]
