@@ -12,7 +12,8 @@ class AddressSerializers(serializers.ModelSerializer):
         
 
 
-# class FavouriteSerializers(serializers.ModelSerializer):
-#     class Meta:
-#         model = UserFavorite
+class FavouriteSerializers(serializers.ModelSerializer):
+     class Meta:
+         model = User
+         field = ['first_name','last_name','fav_recipes']
         
