@@ -17,6 +17,9 @@ class AddressSerializers(serializers.ModelSerializer):
 
 class FavouriteSerializers(serializers.ModelSerializer):
      class Meta:
-         model = User
-         field = ['first_name','last_name','fav_recipes']
+        model = User
+        field = ['first_name','last_name','fav_recipes']
+        extra_kwargs = {
+            'user':{'required':True},
+        }
         

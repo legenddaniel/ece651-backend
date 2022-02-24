@@ -7,6 +7,8 @@ urlpatterns = [
     path(r'address/',views.AddressView.as_view({'get':'get'}),name='get_address'),
     path(r'address/add/',views.AddressView.as_view({'post':'post'}),name='update_address'),
     path(r'address/update/',views.AddressView.as_view({'post':'put'}),name='add_address'),
+    
+    path(r'favourite/', views.FavouriteView.as_view({'get':'get_fav','post':'create'}))
 ]
 
     

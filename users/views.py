@@ -57,10 +57,12 @@ class AddressView(viewsets.ViewSet):
 
 class FavouriteView(viewsets.ViewSet):
     
-    serializer_class = FavouriteSerializers
+    
     def get_fav(self,request):
-        favourite_list = User.objects.all()    #Recipe.objects.all()
-        return favourite_list
+        cur_user = User.objects.filter(user = request.user).first()
+        favourite_list = cur_user.fav_recipes.all()
+        serializer = FavouriteSerializers(favourite_list,many = True)
+        return Response(serializer.data)
     
     def create(self,request, *args, **kwargs):
         
