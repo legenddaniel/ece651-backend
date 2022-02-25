@@ -3,26 +3,25 @@ from django.shortcuts import redirect, render
 from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from django.contrib.postgres.search import SearchVector, TrigramSimilarity
 from rest_framework.exceptions import ParseError
-from rest_framework.views import APIView
-from .models import ShippingAddress,User
-from recipes.models import Recipe
-from .serializers import AddressSerializers,FavouriteSerializers
+from rest_framework.viewsets import ModelViewSet
+from .models import ShippingAddress
+
+from .serializers import AddressSerializers
 
 
-class AddressView(viewsets.ViewSet):
+class AddressView(ModelViewSet):
     #permission_classes = (AllowAny,)
-    
+    serializer_class = AddressSerializers
     
     def get(self,request):
-        # if not request.user.is_authenticated:
-        #     return redirect("login")
         
-        origin_address = ShippingAddress.objects.filter(user = self.request.user)
+        # origin_address = ShippingAddress.objects.filter(user = self.request.user)
         
-        serializer = AddressSerializers(origin_address,many = True)
-        return Response(serializer.data)
+        # serializer = AddressSerializers(origin_address,many = True)
+        # return Response(serializer.data)
+        curr_user = self.request.user
+        return ShippingAddress.objects.filter(user = curr_user)
     
     def post(self,request):
         
@@ -38,9 +37,9 @@ class AddressView(viewsets.ViewSet):
     
     
     
-    def put(self,request, *args, **kwargs):
+    def put(self,request):
         
-        ship_update = ShippingAddress.objects.filter(user = self.request.user).first()
+        ship_update = ShippingAddress.objects.filter(user = request.user).first()
         serializer = AddressSerializers(ship_update, data = request.data)  #instance = new_add
         message= {}
         
@@ -55,25 +54,3 @@ class AddressView(viewsets.ViewSet):
         
     
 
-class FavouriteView(viewsets.ViewSet):
-    
-    
-    def get_fav(self,request):
-        cur_user = User.objects.filter(user = request.user).first()
-        favourite_list = cur_user.fav_recipes.all()
-        serializer = FavouriteSerializers(favourite_list,many = True)
-        return Response(serializer.data)
-    
-    def create(self,request, *args, **kwargs):
-        
-        serializer = AddressSerializers(data = request.data) 
-        
-        data = request.data
-        
-        for recipe_temp in data["fav_recipes"]:
-            recipe_obj  = Recipe.objects.get(name = recipe_temp["name"])
-            User.fav_recipes.add(recipe_obj)
-        
-        
-        
-        return Response(serializer)

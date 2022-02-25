@@ -68,7 +68,7 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
                                     CustomValidator.phone_number])
     email = models.EmailField()
     
-    address = models.CharField(max_length=50, validators=[
+    address = models.CharField(max_length=50, default = "", validators=[
                                 CustomValidator.alphanumeric])
     province = models.CharField(max_length=2, choices=Province.choices)
 
@@ -76,9 +76,3 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
         return 'Shipping Addresses'
 
 
-
-# class UserFavorite(models.Model):
-#     user = models.ManyToManyField(User, related_name='favourite_recipes')
-    
-#     def __str__(self):
-#         return 'Favourite Recipes'
