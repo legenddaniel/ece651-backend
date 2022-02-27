@@ -76,7 +76,6 @@ class AbstractTestSetup(ABC):
             ),
         ])
 
-<<<<<<< HEAD
 
     @staticmethod
     def setup_ship_add(self):
@@ -88,14 +87,6 @@ class AbstractTestSetup(ABC):
         self.shipping_address = ShippingAddress.objects.bulk_create([
             ShippingAddress(
                 user=self.user,
-                full_name = "",
-                phone_number = "",
-                email = "",
-                address = "",
-                province = "ON"
-            ),
-            ShippingAddress(
-                user=self.user,
                 full_name = "aaa",
                 phone_number = "1234567890",
                 email = "a@a.com",
@@ -103,7 +94,7 @@ class AbstractTestSetup(ABC):
                 province = "ON"
             ),
         ])
-=======
+        
     @staticmethod
     def setup_orders(self):
         if not self.user:
@@ -153,4 +144,3 @@ class AbstractTestSetup(ABC):
                 unit_price=self.products[1].price,
             ),
         ])
->>>>>>> master
