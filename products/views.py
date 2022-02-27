@@ -4,7 +4,6 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.contrib.postgres.search import SearchVector, TrigramSimilarity
 from rest_framework.exceptions import ParseError
-from rest_framework.views import APIView
 
 from .models import Product
 from .serializers import ProductSerializer, ProductDetailSerializer

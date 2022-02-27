@@ -1,5 +1,4 @@
 from django.test import TestCase
-from rest_framework.test import RequestsClient
 from products.models import Product, ProductTag, ProductCategory
 
 class TestProductModels(TestCase):
