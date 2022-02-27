@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class ProductCategory(models.Model):
     name = models.CharField('category name', max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255)
 
     class Meta:
         verbose_name = "product category"
@@ -16,7 +16,7 @@ class ProductCategory(models.Model):
 
 class ProductTag(models.Model):
     name = models.CharField('tag name', max_length=50)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255)
     def __str__(self):
         return self.name
 

@@ -1,14 +1,14 @@
 from django.urls import path
 
-from .views import CartItemView
+from .views import OrderView
 
 urlpatterns = [
-    path(r'', CartItemView.as_view({
+    path(r'', OrderView.as_view({
         'get': 'list',
         'post': 'create',
-        'delete': 'destroy'
     })),
-    path(r'<int:pk>/', CartItemView.as_view({
+    path(r'<int:pk>/', OrderView.as_view({
+        'get': 'retrieve',
         'patch': 'partial_update',
     })),
 ]

@@ -33,21 +33,28 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 
 # Product API
 
-- Retrieve product lists: `localhost:8000/api/products`
-- Retrieve product by product id: `localhost:8000/api/products?id=<id>`
-- Search products by product name (full text search allowed): `localhost:8000/api/products?name=<name/part-of-the-name>`
-- Retrieve product by category: `localhost:8000/api/products?category=<category>`
+- Retrieve product lists: `/api/products`
+- Retrieve product by product id: `/api/products?id=<id>`
+- Search products by product name (full text search allowed): `/api/products?name=<name/part-of-the-name>`
+- Retrieve product by category: `/api/products?category=<category>`
 
 # Recipe API
 
-- Retrieve recipe lists: `localhost:8000/api/recipes`
-- Retrieve recipe by recipe id: `localhost:8000/api/recipes?id=<id>`
-- Search recipe by recipe name (full text search allowed): `localhost:8000/api/recipes?name=<name/part-of-the-name>`
-- Retrieve recipe by cuisine: `localhost:8000/api/recipes?cuisine=<cuisine>`
+- Retrieve recipe lists: `/api/recipes`
+- Retrieve recipe by recipe id: `/api/recipes?id=<id>`
+- Search recipe by recipe name (full text search allowed): `/api/recipes?name=<name/part-of-the-name>`
+- Retrieve recipe by cuisine: `/api/recipes?cuisine=<cuisine>`
 
-# Cart API
+# Cart API (current user)
 
 - *Retrieve cart items: `/api/cart/` GET
-- *Create new item: `/api/cart/` POST `{ product: 2, quantity: 1 }` (product -> product_id)
+- *Create new item: `/api/cart/` POST `{ product_id: 2, quantity: 1 }`
 - *Update an item: `/api/cart/<item_id>/` PATCH `{ quantity: 2 }` Wse this with `{ quantity: 0 }` to remove cart item.
 - *Clear cart: `/api/cart/` DELETE
+
+# Order API (current user)
+
+- *Retrieve orders: `/api/orders/` GET
+- *Retrieve an order: `/api/orders/<order_id>/` GET
+- *Create new order: `/api/orders/` POST `{ status: 'unpaid', order_items: [{ product_id: 1, quantity: 2 }, { product_id: 2, quantity: 1 }] }`
+- *Update an order: `/api/orders/<order_id>/` PATCH `{ status: 'cancelled' }` Currently regard `status=cancelled` as deleting order

@@ -8,3 +8,10 @@ __pycache__/
 # db
 postgres_data/
 *.sqlite*
+
+# production environment
+.env.staging
+.env.staging.proxy-companion
+
+# test coverage files
+.coverage

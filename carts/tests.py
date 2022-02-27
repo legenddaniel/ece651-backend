@@ -52,7 +52,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': False,
                 'data': {
-                    "product": 1,
+                    "product_id": 1,
                     "quantity": 1
                 },
                 'assertions': [
@@ -63,7 +63,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product": 123131,
+                    "product_id": 123131,
                     "quantity": 1
                 },
                 'assertions': [
@@ -74,7 +74,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product": 1,
+                    "product_id": 1,
                     "quantity": 1
                 },
                 'assertions': [
@@ -87,7 +87,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product": 3,
+                    "product_id": 3,
                     "quantity": 1
                 },
                 'assertions': [
@@ -99,7 +99,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product_id": 3,
+                    "dasd": 3,
                     "quantity": 1
                 },
                 'assertions': [

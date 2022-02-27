@@ -17,6 +17,12 @@ class Recipe(models.Model):
         ('thai', 'Thai'),
         ('indonesian', 'Indonesian'),
         ('middleeast', 'Middle East'),
+        ('italian', 'Italian'),
+        ('japanese', 'Japanese'),
+        ('korean', 'Korean'),
+        ('vietnamese', 'Vietnamese'),
+        ('northamerican', 'North American'),
+        ('greek', 'Greek'),
     ]
     name = models.CharField('recipe name',max_length=50)
     description = models.TextField(blank=True)
@@ -26,6 +32,7 @@ class Recipe(models.Model):
     image_url = models.URLField(max_length=500)
     products = models.ManyToManyField(Product, through='ProductQuantity', through_fields=('recipe','product'), related_name='recipe_products')
     instructions = ArrayField(models.CharField(max_length=200), null=True, blank=True)
+    ingredients_detail = ArrayField(models.CharField(max_length=200), null=True, blank=True)
     last_purchase_made = models.DateTimeField(auto_now=True)
     total_reviews = models.IntegerField(default=0)
     slug = models.SlugField(max_length=255)
@@ -42,15 +49,15 @@ class ProductQuantity(models.Model):
 
 class Nutrient(models.Model):
     recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE)
-    calories = models.CharField(max_length=50)
-    total_fat = models.CharField('total fat', max_length=50)
-    saturated_fat = models.CharField('saturated fat', max_length=50)
-    cholesterol = models.CharField(max_length=50)
-    sodium = models.CharField(max_length=50)
-    total_fiber = models.CharField('total fiber', max_length=50)
-    protein = models.CharField(max_length=50)
-    carbohydrates = models.CharField(max_length=50)
-    potassium = models.CharField(max_length=50)
+    calories = models.CharField(max_length=50, null=True, blank=True)
+    total_fat = models.CharField('total fat', max_length=50, null=True, blank=True)
+    saturated_fat = models.CharField('saturated fat', max_length=50, null=True, blank=True)
+    cholesterol = models.CharField(max_length=50, null=True, blank=True)
+    sodium = models.CharField(max_length=50, null=True, blank=True)
+    total_fiber = models.CharField('total fiber', max_length=50, null=True, blank=True)
+    protein = models.CharField(max_length=50, null=True, blank=True)
+    carbohydrates = models.CharField(max_length=50, null=True, blank=True)
+    potassium = models.CharField(max_length=50, null=True, blank=True)
     def __str__(self):
         return self.recipe.name
 
