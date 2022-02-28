@@ -76,6 +76,25 @@ class AbstractTestSetup(ABC):
             ),
         ])
 
+
+    @staticmethod
+    def setup_ship_add(self):
+        if not self.user:
+            raise ValueError('You need a user to set up address')
+        
+        from users.models import ShippingAddress
+
+        self.shipping_address = ShippingAddress.objects.bulk_create([
+            ShippingAddress(
+                user=self.user,
+                full_name = "aaa",
+                phone_number = "1234567890",
+                email = "a@a.com",
+                address = "First St",
+                province = "ON"
+            ),
+        ])
+        
     @staticmethod
     def setup_orders(self):
         if not self.user:
