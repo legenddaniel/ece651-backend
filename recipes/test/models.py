@@ -2,7 +2,7 @@ from django.test import TestCase
 from recipes.models import *
 from project.setup_test import AbstractTestSetup
 
-class TestProductModels(TestCase):
+class TestRecipeModels(TestCase):
 
     #Set up test
     @classmethod
@@ -60,10 +60,10 @@ class TestProductModels(TestCase):
         self.assertEqual(str(self.recipes[2].total_reviews), "15")
 
     def test_recipe_products(self):
-        self.assertEqual(str(self.recipes[0].products.get(pk=1).name), "test1")
-        self.assertEqual(str(self.recipes[0].products.get(pk=2).name), "test2")
-        self.assertEqual(str(self.recipes[1].products.get(pk=2).name), "test2")
-        self.assertEqual(str(self.recipes[1].products.get(pk=3).name), "test3")
-        self.assertEqual(str(self.recipes[2].products.get(pk=1).name), "test1")
-        self.assertEqual(str(self.recipes[2].products.get(pk=2).name), "test2")
-        self.assertEqual(str(self.recipes[2].products.get(pk=3).name), "test3")
+        self.assertEqual(str(self.recipes[0].products.get(pk=self.products[0].id).name), "test1")
+        self.assertEqual(str(self.recipes[0].products.get(pk=self.products[1].id).name), "test2")
+        self.assertEqual(str(self.recipes[1].products.get(pk=self.products[1].id).name), "test2")
+        self.assertEqual(str(self.recipes[1].products.get(pk=self.products[2].id).name), "test3")
+        self.assertEqual(str(self.recipes[2].products.get(pk=self.products[0].id).name), "test1")
+        self.assertEqual(str(self.recipes[2].products.get(pk=self.products[1].id).name), "test2")
+        self.assertEqual(str(self.recipes[2].products.get(pk=self.products[2].id).name), "test3")

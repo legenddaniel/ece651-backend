@@ -2,7 +2,7 @@ from django.test import TestCase
 from recipes.models import *
 from project.setup_test import AbstractTestSetup
 
-class TestProductModels(TestCase):
+class TestRecipeViews(TestCase):
 
     #Set up test
     @classmethod
@@ -68,12 +68,12 @@ class TestProductModels(TestCase):
         self.assertGreaterEqual(len(res4.data), 0)
 
     def test_get_recipes_by_id(self):
-        res1 = self.client.get('/api/recipes/?id=1')
+        res1 = self.client.get('/api/recipes/?id='+str(self.recipes[0].id))
         self.assertEqual(res1.status_code, 200)
         self.assertEqual(res1.data[0]['name'], 'recipe1')
-        res2 = self.client.get('/api/recipes/?id=2')
+        res2 = self.client.get('/api/recipes/?id='+str(self.recipes[1].id))
         self.assertEqual(res2.status_code, 200)
         self.assertEqual(res2.data[0]['name'], 'recipe2')
-        res3 = self.client.get('/api/recipes/?id=4')
+        res3 = self.client.get('/api/recipes/?id='+str(self.recipes[2].id + 1))
         self.assertEqual(res3.status_code, 200)
         self.assertEqual(len(res3.data), 0)

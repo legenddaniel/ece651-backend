@@ -17,7 +17,6 @@ class AddressView(ModelViewSet):
     def get(self,request):
         
         origin_address = ShippingAddress.objects.filter(user = self.request.user)
-        print(origin_address)
         serializer = AddressSerializers(origin_address,many = True)
         
         return Response(serializer.data)

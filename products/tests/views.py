@@ -1,8 +1,9 @@
+from django.test import TestCase
 from rest_framework.test import APITestCase
 from project.setup_test import AbstractTestSetup
 
 
-class OrderTest(APITestCase, AbstractTestSetup):
+class TestProductView(AbstractTestSetup, APITestCase):
     @classmethod
     def setUpTestData(self):
         AbstractTestSetup.setup_products(self)
@@ -28,12 +29,12 @@ class OrderTest(APITestCase, AbstractTestSetup):
         self.assertGreaterEqual(len(res4.data), 0)
 
     def test_get_product_by_id(self):
-        res1 = self.client.get('/api/products/?id=1')
+        res1 = self.client.get('/api/products/?id='+str(self.products[0].id))
         self.assertEqual(res1.status_code, 200)
         self.assertEqual(res1.data[0]['name'], 'test1')
-        res2 = self.client.get('/api/products/?id=2')
+        res2 = self.client.get('/api/products/?id='+str(self.products[1].id))
         self.assertEqual(res2.status_code, 200)
         self.assertEqual(res2.data[0]['name'], 'test2')
-        res3 = self.client.get('/api/products/?id=4')
+        res3 = self.client.get('/api/products/?id='+str(self.products[2].id + 1))
         self.assertEqual(res3.status_code, 200)
         self.assertEqual(len(res3.data), 0)
