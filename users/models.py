@@ -44,6 +44,8 @@ class User(AbstractUser, UUIDModel):
     last_name = None
 
     fav_recipes = models.ManyToManyField(Recipe, blank=True)
+    credit_card = models.CharField(max_length=16, blank=True, null=True, validators=[
+                                   CustomValidator.creadit_card])
 
     objects = CustomAccountManager()
 
@@ -67,12 +69,10 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
     phone_number = models.CharField(max_length=10, validators=[
                                     CustomValidator.phone_number])
     email = models.EmailField()
-    
-    address = models.CharField(max_length=50, default = "", validators=[
-                                CustomValidator.alphanumeric])
+
+    address = models.CharField(max_length=50, default="", validators=[
+        CustomValidator.alphanumeric])
     province = models.CharField(max_length=2, choices=Province.choices)
 
     def __str__(self):
-        return 'Shipping Addresses'
-
-
+        return self.user.username + ' address'

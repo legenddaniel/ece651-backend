@@ -1,24 +1,22 @@
-from wsgiref import validate
 from rest_framework import serializers
 
-from .models import User,ShippingAddress
+from carts.serializers import CartItemSerializer
+from orders.serializers import OrderSerializer
 
-from project.validators import CustomValidator
+from .models import ShippingAddress, User
 
 
-class AddressSerializers(serializers.ModelSerializer):
+class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShippingAddress
-        fields = ['full_name','phone_number','email','address','province']
-        #fields = '__all__'
-        # extra_kwargs = {
-        #     'user':{'required':True},
-        # }
-    
-    # def create(self,validated_data):
-    #     user_data = validated_data.pop('user')
-    #     user = User.objects.create_user(**user_data)
-    #     address = ShippingAddress.objects.create(user, **validated_data)
-    #     return address
+        fields = '__all__'
 
 
+class UserSerializer(serializers.ModelSerializer):
+    cart_items = CartItemSerializer(many=True, read_only=True)
+    orders = OrderSerializer(many=True, read_only=True)
+    shipping_address = ShippingAddressSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = User
+        exclude = ['password']
