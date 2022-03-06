@@ -1,7 +1,18 @@
 from rest_framework import serializers
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from users.models import User
 from project.validators import CustomValidator
+
+from users.serializers import UserSerializer
+
+
+class LoginSerializer(AuthTokenSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = '__all__'
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

@@ -2,42 +2,26 @@ from django.contrib.auth import login
 
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.response import Response
 
 from knox.views import LoginView as KnoxLoginView
 
-from .serializers import ChangePasswordSerializer, RegistrationSerializer
+from .serializers import ChangePasswordSerializer, RegistrationSerializer, LoginSerializer
 
 
 class LoginView(KnoxLoginView):
     permission_classes = (AllowAny,)
 
     def post(self, request, format=None):
-        serializer = AuthTokenSerializer(data=request.data)
+        serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        login(request, user)
+        login(request, serializer.validated_data['user'])
 
         login_res = super(LoginView, self).post(request, format=None)
 
-        user_res = {}
-        for field in user._meta.get_fields():
-            # Token provided by `login_res`. No password return.
-            if field.name in ('auth_token_set', 'password'):
-                continue
-
-            # Get primitive values
-            queryset = getattr(user, field.name, None)
-            if hasattr(queryset, 'values'):
-                # Get object values
-                queryset = queryset.values()
-
-            user_res[field.name] = queryset
-
         return Response({
             **login_res.data,
-            **user_res,
+            **serializer.data['user'],
         })
 
 

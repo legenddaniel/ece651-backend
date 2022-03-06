@@ -31,6 +31,13 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 - Sign up: `/api/auth/signup/` POST `{ username: ece, email: ece@gmail.com, password: '12345678' }`
 - *Change password: `/api/auth/change_password/` POST `{ old_password: '12345678', new_password: '12345678' }`
 
+# User API
+
+- *Get current user: `/api/users/` GET
+- *Update current user: `/api/users/` PATCH `{ username: 'asdasddasd' }` Do not use this for changing password
+- *Get user address: `/api/users/address/` GET
+- *Create/update user address: `/api/users/address/` PUT `{ full_name: 'asd', phone_number: '1234567890', email: 's@a.com', address: '1 John St', province: 'ON' }`
+
 # Product API
 
 - Retrieve product lists: `/api/products`
@@ -49,7 +56,7 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 
 - *Retrieve cart items: `/api/cart/` GET
 - *Create new item: `/api/cart/` POST `{ product_id: 2, quantity: 1 }`
-- *Update an item: `/api/cart/<item_id>/` PATCH `{ quantity: 2 }` Wse this with `{ quantity: 0 }` to remove cart item.
+- *Update an item: `/api/cart/<item_id>/` PATCH `{ quantity: 2 }` Use this with `{ quantity: 0 }` to remove cart item.
 - *Clear cart: `/api/cart/` DELETE
 
 # Order API (current user)
