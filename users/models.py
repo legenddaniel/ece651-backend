@@ -44,7 +44,7 @@ class User(AbstractUser, UUIDModel):
     last_name = None
 
     fav_recipes = models.ManyToManyField(Recipe, blank=True)
-    credit_card = models.CharField(max_length=16, blank=True, null=True, validators=[
+    credit_card = models.CharField(max_length=16, default='', validators=[
                                    CustomValidator.creadit_card])
 
     objects = CustomAccountManager()
@@ -58,8 +58,16 @@ class User(AbstractUser, UUIDModel):
 
 class ShippingAddress(UUIDModel, TimeStampedModel):
     class Province(models.TextChoices):
+        AB = 'AB', _('AB')
+        BC = 'BC', _('BC')
+        MB = 'MB', _('MB')
+        NB = 'NB', _('NB')
+        NS = 'NS', _('NS')
+        NL = 'NL', _('NL')
         ON = 'ON', _('ON')
-        # ...more
+        PE = 'PE', _('PE')
+        QC = 'QC', _('QC')
+        SK = 'SK', _('SK')
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='shipping_address')
@@ -73,6 +81,8 @@ class ShippingAddress(UUIDModel, TimeStampedModel):
     address = models.CharField(max_length=50, default="", validators=[
         CustomValidator.alphanumeric])
     province = models.CharField(max_length=2, choices=Province.choices)
+    postal_code = models.CharField(max_length=6, default='', validators=[
+                                   CustomValidator.postal_code])
 
     def __str__(self):
         return self.user.username + ' address'

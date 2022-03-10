@@ -78,6 +78,16 @@ class UserTest(APITestCase, AbstractTestSetup):
                     lambda res: self.assertEqual(res.data['username'], '1'),
                 ]
             },
+            {
+                'auth': True,
+                'data': {
+                    "credit_card": ''
+                },
+                'assertions': [
+                    # Should not clear credit card once set
+                    lambda res: self.assertEqual(res.status_code, 400),
+                ]
+            },
         ]
 
         for test in tests:
@@ -140,6 +150,7 @@ class ShippingAddressTest(APITestCase, AbstractTestSetup):
                 'email': "aaa@a.com",
                 'address': "222 St",
                 'province': "ON",
+                'postal_code': 'M2W2W2',
                 'assertions': [
                     # Should not valid to unauthed user
                     lambda res: self.assertEqual(res.status_code, 401),
@@ -152,6 +163,7 @@ class ShippingAddressTest(APITestCase, AbstractTestSetup):
                 'email': "aaa@a.com",
                 'address': "222 St",
                 'province': "ON",
+                'postal_code': 'M2W2W2',
                 'assertions': [
                     # invalid phone
                     lambda res: self.assertEqual(res.status_code, 400),
@@ -164,6 +176,7 @@ class ShippingAddressTest(APITestCase, AbstractTestSetup):
                 'email': "aaa",
                 'address': "222 St",
                 'province': "ON",
+                'postal_code': 'M2W2W2',
                 'assertions': [
                     # invalid email
                     lambda res: self.assertEqual(res.status_code, 400),
@@ -176,8 +189,22 @@ class ShippingAddressTest(APITestCase, AbstractTestSetup):
                 'email': "aaa@a.com",
                 'address': "222 St",
                 'province': "ON",
+                'postal_code': 'M2W2W2',
                 'assertions': [
                     # invalid name
+                    lambda res: self.assertEqual(res.status_code, 400),
+                ]
+            },
+            {
+                'auth': True,
+                'full_name': "++++++?",
+                'phone_number': "1234567890",
+                'email': "aaa@a.com",
+                'address': "222 St",
+                'province': "ON",
+                'postal_code': 'M2W 2W2',
+                'assertions': [
+                    # invalid postal code
                     lambda res: self.assertEqual(res.status_code, 400),
                 ]
             },
@@ -188,6 +215,7 @@ class ShippingAddressTest(APITestCase, AbstractTestSetup):
                 'email': "aaa@a.com",
                 'address': "222 St",
                 'province': "ON",
+                'postal_code': 'M2W2W2',
                 'assertions': [
                     # successful
                     lambda res: self.assertGreaterEqual(res.status_code, 200),
@@ -200,6 +228,7 @@ class ShippingAddressTest(APITestCase, AbstractTestSetup):
                 'email': "aaa@a.com",
                 'addr': "222 St",
                 'province': "ON",
+                'postal_code': 'M2W2W2',
                 'assertions': [
                     # wrong field
                     lambda res: self.assertGreaterEqual(res.status_code, 400),
