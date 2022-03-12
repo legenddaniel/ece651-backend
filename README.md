@@ -55,7 +55,7 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 # Cart API (current user)
 
 - *Retrieve cart items: `/api/cart/` GET
-- *Create new item: `/api/cart/` POST `{ product_id: 2, quantity: 1 }`
+- *Create new item(s): `/api/cart/` POST `[{ product_id: 1, quantity: 1 }, { product_id: 2, quantity: 1 }]`
 - *Update an item: `/api/cart/<item_id>/` PATCH `{ quantity: 2 }` Use this with `{ quantity: 0 }` to remove cart item.
 - *Clear cart: `/api/cart/` DELETE
 
