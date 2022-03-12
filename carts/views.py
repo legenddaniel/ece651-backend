@@ -16,7 +16,10 @@ class CartItemView(ModelViewSet):
 
     # Add one item to cart
     def create(self, request):
-        serializer = CartItemSerializer(data={'user': request.user.id, **request.data})
+        items = request.data if isinstance(
+            request.data, list) else [request.data]
+        serializer = CartItemSerializer(
+            data=[{'user': request.user.id, **item} for item in items], many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
