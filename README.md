@@ -34,9 +34,9 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 # User API
 
 - *Get current user: `/api/users/` GET
-- *Update current user: `/api/users/` PATCH `{ username: 'asdasddasd' }` Do not use this for changing password
+- *Update current user (including address): `/api/users/` PATCH `{ username: 'asdasddasd', shipping_address: { full_name: 'asd', phone_number: '1234567890', email: 's@a.com', address: '1 John St', province: 'ON', postal_code: 'M2W2W2' }}` Do not use this for changing password
 - *Get user address: `/api/users/address/` GET
-- *Create/update user address: `/api/users/address/` PUT `{ full_name: 'asd', phone_number: '1234567890', email: 's@a.com', address: '1 John St', province: 'ON' }`
+- *Create/update user address: `/api/users/address/` PUT `{ full_name: 'asd', phone_number: '1234567890', email: 's@a.com', address: '1 John St', province: 'ON', postal_code: 'M2W2W2' }`
 
 # Product API
 
@@ -55,7 +55,7 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 # Cart API (current user)
 
 - *Retrieve cart items: `/api/cart/` GET
-- *Create new item: `/api/cart/` POST `{ product_id: 2, quantity: 1 }`
+- *Create new item(s): `/api/cart/` POST `[{ product_id: 1, quantity: 1 }, { product_id: 2, quantity: 1 }]`
 - *Update an item: `/api/cart/<item_id>/` PATCH `{ quantity: 2 }` Use this with `{ quantity: 0 }` to remove cart item.
 - *Clear cart: `/api/cart/` DELETE
 

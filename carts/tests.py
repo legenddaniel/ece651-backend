@@ -52,7 +52,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': False,
                 'data': {
-                    "product_id": 1,
+                    "product_id": self.products[0].id,
                     "quantity": 1
                 },
                 'assertions': [
@@ -74,7 +74,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product_id": 1,
+                    "product_id": self.products[0].id,
                     "quantity": 1
                 },
                 'assertions': [
@@ -87,7 +87,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "product_id": 3,
+                    "product_id": self.products[2].id,
                     "quantity": 1
                 },
                 'assertions': [
@@ -98,12 +98,43 @@ class CartTest(APITestCase, AbstractTestSetup):
             },
             {
                 'auth': True,
+                'data': [
+                    {
+                        "product_id": self.products[1].id,
+                        "quantity": 1
+                    },
+                    {
+                        "product_id": self.products[2].id,
+                        "quantity": 1
+                    }
+                ],
+                'assertions': [
+                    # Add 2 new product
+                    lambda res: self.assertEqual(len(res.data), 3),
+                    lambda res: self.assertEqual(
+                        res.data[1]['quantity'], self.cart_items[1].quantity + 1),
+                    lambda res: self.assertEqual(res.data[2]['quantity'], 2),
+                ]
+            },
+            {
+                'auth': True,
                 'data': {
-                    "dasd": 3,
+                    "dasd": self.products[0].id,
                     "quantity": 1
                 },
                 'assertions': [
                     # Wrong field
+                    lambda res: self.assertEqual(res.status_code, 400),
+                ]
+            },
+            {
+                'auth': True,
+                'data': {
+                    "dasd": self.products[0].id,
+                    "quantity": 11111111111111111
+                },
+                'assertions': [
+                    # Out of stock
                     lambda res: self.assertEqual(res.status_code, 400),
                 ]
             },
@@ -125,7 +156,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             # Tests that do not require auth first
             {
                 'auth': False,
-                'item_id': 1,
+                'item_id': self.cart_items[0].id,
                 'data': {
                     "quantity": 1
                 },
@@ -136,7 +167,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             },
             {
                 'auth': True,
-                'item_id': 1,
+                'item_id': self.cart_items[0].id,
                 'data': {
                     "quantity": 1
                 },
@@ -158,7 +189,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             },
             {
                 'auth': True,
-                'item_id': 1,
+                'item_id': self.cart_items[0].id,
                 'data': {
                     "quantity": 0
                 },
@@ -169,7 +200,7 @@ class CartTest(APITestCase, AbstractTestSetup):
             },
             {
                 'auth': True,
-                'item_id': 1,
+                'item_id': self.cart_items[0].id,
                 'data': {
                     "quantit": 5
                 },
