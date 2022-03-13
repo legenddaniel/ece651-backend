@@ -9,7 +9,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (
             None,
-            {"fields": ("email", "username", "password")}
+            {"fields": ("email", "username", "password", "credit_card", "fav_recipes")}
         ),
         (
             _("Timelines"),

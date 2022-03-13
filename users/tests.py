@@ -99,6 +99,27 @@ class UserTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
+                    "credit_card": '0120012001200120',
+                    "shipping_address": {
+                        "full_name": "vvvvaaaa",
+                        "phone_number": "1234567890",
+                        "email": "s@a.com",
+                        "address": "222 St",
+                        "province": "AB",
+                        "postal_code": "M2W2W4"
+                    }
+                },
+                'assertions': [
+                    # Change both self and related object
+                    lambda res: self.assertEqual(
+                        res.data['shipping_address']['province'], 'AB'),
+                    lambda res: self.assertEqual(
+                        res.data['credit_card'], '0120012001200120'),
+                ]
+            },
+            {
+                'auth': True,
+                'data': {
                     "credit_card": ''
                 },
                 'assertions': [

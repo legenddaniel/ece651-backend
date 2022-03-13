@@ -16,15 +16,14 @@ class UserView(ModelViewSet):
         return self.request.user
 
     def partial_update(self, request, pk=None):
-        if 'shipping_address' not in request.data:
-            return super().partial_update(request, pk)
+        if 'shipping_address' in request.data:
+            address = request.user.shipping_address
+            address_serializer = ShippingAddressSerializer(
+                address, data={'user': request.user.id, **request.data['shipping_address']})
+            address_serializer.is_valid(raise_exception=True)
+            address_serializer.save()
 
-        address = request.user.shipping_address
-        address_serializer = ShippingAddressSerializer(
-            address, data={'user': request.user.id, **request.data['shipping_address']})
-        address_serializer.is_valid(raise_exception=True)
-        address_serializer.save()
-        return self.retrieve(request, pk)
+        return super().partial_update(request, pk)
 
 
 class ShippingAddressView(ModelViewSet):
