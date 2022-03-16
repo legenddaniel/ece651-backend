@@ -175,11 +175,11 @@ class OrderTest(APITestCase, AbstractTestSetup):
             {
                 'auth': True,
                 'data': {
-                    "status": "asdasdda",
+                    "status": "asd",
                     "order_items": [
                         {
                             "product_id": self.products[0].id,
-                            "quantity": -1
+                            "quantity": 1
                         },
                         {
                             "product_id": self.products[1].id,
@@ -249,6 +249,17 @@ class OrderTest(APITestCase, AbstractTestSetup):
                     # Change first order to completed
                     lambda res: self.assertEqual(
                         res.data[0]['status'], 'completed'),
+                ]
+            },
+            {
+                'auth': True,
+                'order_id': self.orders[0].id,
+                'data': {
+                    "status": 'complet'
+                },
+                'assertions': [
+                    # Wrong status
+                    lambda res: self.assertEqual(res.status_code, 400),
                 ]
             },
             {

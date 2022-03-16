@@ -3,7 +3,7 @@ from rest_framework.test import APITestCase
 from project.setup_test import AbstractTestSetup
 
 
-class CartTest(APITestCase, AbstractTestSetup):
+class CartViewTest(APITestCase, AbstractTestSetup):
     @classmethod
     def setUpTestData(self):
         AbstractTestSetup.setup_user(self, signin=True)

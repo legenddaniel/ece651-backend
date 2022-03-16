@@ -72,5 +72,4 @@ class TestProductModels(TestCase):
         self.assertEqual(self.product1.labels.get(pk=1).name, "Low in Sodium")
 
     def test_product_label_name2(self):
-        # print(self.product1.labels.get(name="High in Protein"))
         self.assertEqual(self.product1.labels.get(name="High in Protein").name, "High in Protein")

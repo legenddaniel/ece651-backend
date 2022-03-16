@@ -8,11 +8,16 @@ class AbstractTestSetup(ABC):
     '''
 
     @staticmethod
-    def setup_user(self, email=None, password=None, signin=False):
+    def setup_superuser(self, email='admin@test.com', password='12345678'):
         from users.models import User
 
-        self.user = User.objects.create_user(
-            email or 'test@test.com', password or '12345678')
+        self.superuser = User.objects.create_superuser(email, password)
+
+    @staticmethod
+    def setup_user(self, email='test@test.com', password='12345678', signin=False):
+        from users.models import User
+
+        self.user = User.objects.create_user(email, password)
 
         if signin:
             from knox.models import AuthToken
@@ -56,10 +61,6 @@ class AbstractTestSetup(ABC):
 
     @staticmethod
     def setup_cart_items(self):
-        if not self.user:
-            raise ValueError('You need a user to set up cart item')
-        if not self.products or not len(self.products):
-            raise ValueError('You need a product to set up cart item')
 
         from carts.models import CartItem
 
@@ -78,8 +79,6 @@ class AbstractTestSetup(ABC):
 
     @staticmethod
     def setup_ship_add(self):
-        if not self.user:
-            raise ValueError('You need a user to set up address')
 
         from users.models import ShippingAddress
 
@@ -94,10 +93,6 @@ class AbstractTestSetup(ABC):
 
     @staticmethod
     def setup_orders(self):
-        if not self.user:
-            raise ValueError('You need a user to set up order')
-        if not self.products or not len(self.products):
-            raise ValueError('You need a product to set up order')
 
         from orders.models import Order, OrderItem
         from decimal import Decimal
