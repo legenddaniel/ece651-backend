@@ -16,6 +16,8 @@ helper() {
     commands="$commands stop                    Stop server\n"
     commands="$commands build                   Build docker container\n"
     commands="$commands django [...cmd]         Run Django ${COL_LYELLOW}manage.py${COL_RESET} commands. Run ${COL_LGREEN}./leh django -h${COL_RESET} or check their doc for help\n"
+    commands="$commands coverage [...cmd]       Run Django test with coverage\n"
+    commands="$commands coverage-html           Export coverage test report to /htmlcov\n"
 
     printf "$commands\n"
 }
@@ -31,6 +33,11 @@ if [ $# -gt 0 ]; then
     elif [ "$1" == "django" ]; then
         shift
         $COMPOSE exec $BACKEND python manage.py $@
+    elif [ "$1" == "coverage" ]; then
+        shift
+        $COMPOSE exec $BACKEND coverage run manage.py test $@
+    elif [ "$1" == "coverage-html" ]; then
+        $COMPOSE exec $BACKEND coverage html
     else
         helper
         exit 1
