@@ -39,6 +39,8 @@ class OrderView(ModelViewSet):
     # Create an order
     @transaction.atomic
     def create(self, request):
+        if request.data['status'] not in ('unpaid', 'paid', 'completed', 'cancelled'):
+            return Response('Invalid status.', status=status.HTTP_400_BAD_REQUEST)
 
         # Create order
         order = {

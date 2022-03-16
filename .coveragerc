@@ -1,0 +1,13 @@
+# Omit business irrelavent module testing
+
+[run]
+omit =
+    */__init__.py
+    */manage.py
+    */migrations/*
+
+[report]
+omit =
+    */__init__.py
+    */manage.py
+    */migrations/*

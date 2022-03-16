@@ -12,6 +12,3 @@ postgres_data/
 # production environment
 .env.staging
 .env.staging.proxy-companion
-
-# test coverage files
-.coverage
