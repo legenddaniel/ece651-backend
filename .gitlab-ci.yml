@@ -4,6 +4,9 @@ services:
   - docker:dind
 
 variables:
+  DEBUG: 1
+  SECRETE_KEY: foo
+  DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
   POSTGRES_DB: ece651
   POSTGRES_USER: ece651
   POSTGRES_PASSWORD: ece651
@@ -15,9 +18,29 @@ variables:
   SQL_PORT: 5432
 
 stages:
+  - pre-build
   - build
   - test
-  - deploy
+  - dev-deploy
+
+pre-build-job:
+  stage: pre-build
+  script:
+    - echo "DEBUG=$DEBUG" >> .env
+    - echo "SECRET_KEY=$SECRET_KEY" >> .env
+    - echo "DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS" >> .env
+    - echo "POSTGRES_USER=$POSTGRES_USER" >> .env
+    - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
+    - echo "POSTGRES_DB=$POSTGRES_DB" >> .env
+    - echo "SQL_ENGINE=$SQL_ENGINE" >> .env
+    - echo "SQL_DATABASE=$SQL_DATABASE" >> .env
+    - echo "SQL_USER=$SQL_USER" >> .env
+    - echo "SQL_PASSWORD=$SQL_PASSWORD" >> .env
+    - echo "SQL_HOST=$SQL_HOST" >> .env
+    - echo "SQL_PORT=$SQL_PORT" >> .env
+  artifacts:
+    reports:
+      dotenv: .env
 
 build-job:
   stage: build
@@ -25,6 +48,7 @@ build-job:
     - master
   script:
     - echo Building project...
+    - echo
     # - sudo docker image prune
     - sudo ./leh build
     - echo Project built sccussfully
@@ -56,7 +80,7 @@ system-test-job:
     - ece651
 
 deploy-job:
-  stage: deploy
+  stage: dev-deploy
   only:
     - master
   script:
@@ -68,5 +92,5 @@ deploy-job:
     - echo Deoloyed to the remote server successfully
   tags:
     - ece651
-  environment: production
+  environment: deployment
   when: manual
