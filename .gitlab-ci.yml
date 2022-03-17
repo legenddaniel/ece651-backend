@@ -1,0 +1,72 @@
+image: docker
+
+services:
+  - docker:dind
+
+variables:
+  POSTGRES_DB: ece651
+  POSTGRES_USER: ece651
+  POSTGRES_PASSWORD: ece651
+  SQL_ENGINE: django.db.backends.postgresql
+  SQL_DATABASE: ece651
+  SQL_USER: ece651
+  SQL_PASSWORD: ece651
+  SQL_HOST: db
+  SQL_PORT: 5432
+
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  stage: build
+  only:
+    - New-CI
+  script:
+    - echo Building project...
+    # - sudo docker image prune
+    - sudo ./leh build
+    - echo Project built sccussfully
+  tags:
+    - ece651
+
+unit-test-integration-test-job:
+  stage: test
+  only:
+    - New-CI
+  script:
+    - echo Running unit tests and integration tests....
+    - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py migrate
+    - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py test
+    - echo "Unit tests & intergation tests passed"
+  tags:
+    - ece651
+
+system-test-job:
+  stage: test
+  only:
+    - New-CI
+  script:
+    - echo Running system tests....
+    - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py migrate
+    - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py test
+    - echo "System tests passed"
+  tags:
+    - ece651
+
+deploy-job:
+  stage: deploy
+  only:
+    - New-CI
+  script:
+    - echo Deploying to the remote server...
+    - sudo docker-compose -f docker-compose.yml build -d
+    - sudo docker-compose up -d
+    - sudo docker-compose logs app
+    - sudo docker rmi $(sudo docker images -f "dangling=true" -q)
+    - echo Deoloyed to the remote server successfully
+  tags:
+    - ece651
+  environment: production
+  when: manual
