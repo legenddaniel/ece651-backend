@@ -22,7 +22,7 @@ stages:
 build-job:
   stage: build
   only:
-    - New-CI
+    - master
   script:
     - echo Building project...
     # - sudo docker image prune
@@ -34,7 +34,7 @@ build-job:
 unit-test-integration-test-job:
   stage: test
   only:
-    - New-CI
+    - master
   script:
     - echo Running unit tests and integration tests....
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py migrate
@@ -46,7 +46,7 @@ unit-test-integration-test-job:
 system-test-job:
   stage: test
   only:
-    - New-CI
+    - master
   script:
     - echo Running system tests....
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py migrate
@@ -58,7 +58,7 @@ system-test-job:
 deploy-job:
   stage: deploy
   only:
-    - New-CI
+    - master
   script:
     - echo Deploying to the remote server...
     - sudo docker-compose -f docker-compose.yml build -d
