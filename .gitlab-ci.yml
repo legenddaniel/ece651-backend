@@ -5,7 +5,7 @@ services:
 
 variables:
   DEBUG: 1
-  SECRETE_KEY: foo
+  SECRET_KEY: foo
   DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
   POSTGRES_DB: ece651
   POSTGRES_USER: ece651
