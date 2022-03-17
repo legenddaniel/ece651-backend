@@ -48,14 +48,22 @@ build-job:
     - master
   script:
     - echo Building project...
-    - echo
-    # - sudo docker image prune
+    - echo "DEBUG=$DEBUG" >> .env
+    - echo "SECRET_KEY=$SECRET_KEY" >> .env
+    - echo "DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS" >> .env
+    - echo "POSTGRES_USER=$POSTGRES_USER" >> .env
+    - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
+    - echo "POSTGRES_DB=$POSTGRES_DB" >> .env
+    - echo "SQL_ENGINE=$SQL_ENGINE" >> .env
+    - echo "SQL_DATABASE=$SQL_DATABASE" >> .env
+    - echo "SQL_USER=$SQL_USER" >> .env
+    - echo "SQL_PASSWORD=$SQL_PASSWORD" >> .env
+    - echo "SQL_HOST=$SQL_HOST" >> .env
+    - echo "SQL_PORT=$SQL_PORT" >> .env
     - sudo ./leh build
     - echo Project built sccussfully
   tags:
     - ece651
-  dependencies:
-    - pre-build-job
 
 unit-test-integration-test-job:
   stage: test
@@ -63,6 +71,18 @@ unit-test-integration-test-job:
     - master
   script:
     - echo Running unit tests and integration tests....
+    - echo "DEBUG=$DEBUG" >> .env
+    - echo "SECRET_KEY=$SECRET_KEY" >> .env
+    - echo "DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS" >> .env
+    - echo "POSTGRES_USER=$POSTGRES_USER" >> .env
+    - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
+    - echo "POSTGRES_DB=$POSTGRES_DB" >> .env
+    - echo "SQL_ENGINE=$SQL_ENGINE" >> .env
+    - echo "SQL_DATABASE=$SQL_DATABASE" >> .env
+    - echo "SQL_USER=$SQL_USER" >> .env
+    - echo "SQL_PASSWORD=$SQL_PASSWORD" >> .env
+    - echo "SQL_HOST=$SQL_HOST" >> .env
+    - echo "SQL_PORT=$SQL_PORT" >> .env
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py migrate
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py test
     - echo "Unit tests & intergation tests passed"
@@ -75,6 +95,18 @@ system-test-job:
     - master
   script:
     - echo Running system tests....
+    - echo "DEBUG=$DEBUG" >> .env
+    - echo "SECRET_KEY=$SECRET_KEY" >> .env
+    - echo "DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS" >> .env
+    - echo "POSTGRES_USER=$POSTGRES_USER" >> .env
+    - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
+    - echo "POSTGRES_DB=$POSTGRES_DB" >> .env
+    - echo "SQL_ENGINE=$SQL_ENGINE" >> .env
+    - echo "SQL_DATABASE=$SQL_DATABASE" >> .env
+    - echo "SQL_USER=$SQL_USER" >> .env
+    - echo "SQL_PASSWORD=$SQL_PASSWORD" >> .env
+    - echo "SQL_HOST=$SQL_HOST" >> .env
+    - echo "SQL_PORT=$SQL_PORT" >> .env
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py migrate
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py test
     - echo "System tests passed"
@@ -87,6 +119,18 @@ deploy-job:
     - master
   script:
     - echo Deploying to the remote server...
+    - echo "DEBUG=$DEBUG" >> .env
+    - echo "SECRET_KEY=$SECRET_KEY" >> .env
+    - echo "DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS" >> .env
+    - echo "POSTGRES_USER=$POSTGRES_USER" >> .env
+    - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
+    - echo "POSTGRES_DB=$POSTGRES_DB" >> .env
+    - echo "SQL_ENGINE=$SQL_ENGINE" >> .env
+    - echo "SQL_DATABASE=$SQL_DATABASE" >> .env
+    - echo "SQL_USER=$SQL_USER" >> .env
+    - echo "SQL_PASSWORD=$SQL_PASSWORD" >> .env
+    - echo "SQL_HOST=$SQL_HOST" >> .env
+    - echo "SQL_PORT=$SQL_PORT" >> .env
     - sudo docker-compose -f docker-compose.yml build -d
     - sudo docker-compose up -d
     - sudo docker-compose logs app
