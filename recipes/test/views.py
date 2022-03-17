@@ -77,3 +77,15 @@ class TestRecipeViews(TestCase):
         res3 = self.client.get('/api/recipes/?id='+str(self.recipes[2].id + 1))
         self.assertEqual(res3.status_code, 200)
         self.assertEqual(len(res3.data), 0)
+
+    def test_get_recipes_by_cuisine(self):
+        res1 = self.client.get('/api/recipes/?cuisine=greek')
+        self.assertEqual(res1.status_code, 200)
+        self.assertEqual(res1.data[0]['name'], 'recipe1')
+
+    def test_get_recipes_parse_error(self):
+        res1 = self.client.get('/api/recipes/?dummy=greek')
+        self.assertEqual(res1.status_code, 400)
+        self.assertEqual(str(res1.data['detail']),'Malformed request.')
+
+

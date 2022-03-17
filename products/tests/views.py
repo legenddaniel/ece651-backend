@@ -38,3 +38,17 @@ class TestProductView(AbstractTestSetup, APITestCase):
         res3 = self.client.get('/api/products/?id='+str(self.products[2].id + 1))
         self.assertEqual(res3.status_code, 200)
         self.assertEqual(len(res3.data), 0)
+
+    def test_get_product_by_category(self):
+        res1 = self.client.get('/api/products/?category=fish')
+        self.assertEqual(res1.status_code, 200)
+        self.assertEqual(res1.data, [])
+
+    def test_get_product_parse_error(self):
+        res1 = self.client.get('/api/products/?dummy=0')
+        self.assertEqual(res1.status_code, 400)
+        self.assertEqual(str(res1.data['detail']),'Malformed request.')
+
+
+
+

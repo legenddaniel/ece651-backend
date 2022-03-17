@@ -2,9 +2,10 @@ from django.test import TestCase
 from recipes.models import *
 from project.setup_test import AbstractTestSetup
 
+
 class TestRecipeModels(TestCase):
 
-    #Set up test
+    # Set up test
     @classmethod
     def setUpTestData(cls):
         AbstractTestSetup.setup_products(cls)
@@ -37,8 +38,11 @@ class TestRecipeModels(TestCase):
         cls.recipes[0].products.set([cls.products[0], cls.products[1]])
         cls.recipes[1].products.set([cls.products[1], cls.products[2]])
         cls.recipes[2].products.set([cls.products[0], cls.products[1], cls.products[2]])
+        cls.label1 = Label.objects.create(recipe_label="Label1")
+        cls.product_q1 = ProductQuantity(product=cls.products[0], recipe=cls.recipes[0], quantity=1)
+        cls.nutrient1 = Nutrient(recipe=cls.recipes[0])
 
-    #Test Recipe Models
+    # Test Recipe Models
     def test_recipe_names(self):
         self.assertEqual(str(self.recipes[0].name), "recipe1")
         self.assertEqual(str(self.recipes[1].name), "recipe2")
@@ -67,3 +71,13 @@ class TestRecipeModels(TestCase):
         self.assertEqual(str(self.recipes[2].products.get(pk=self.products[0].id).name), "test1")
         self.assertEqual(str(self.recipes[2].products.get(pk=self.products[1].id).name), "test2")
         self.assertEqual(str(self.recipes[2].products.get(pk=self.products[2].id).name), "test3")
+
+    def test_recipe_label(self):
+        self.assertEqual(str(self.label1), "Label1")
+
+    def test_recipe_product_quantity(self):
+        self.assertEqual(str(self.product_q1), "recipe1 - test1")
+
+    def test_recipe_nutrient(self):
+        self.assertEqual(str(self.nutrient1), "recipe1")
+
