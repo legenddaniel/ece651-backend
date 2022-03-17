@@ -55,7 +55,7 @@ build-job:
   tags:
     - ece651
   dependencies:
-    - pre-build
+    - pre-build-job
 
 unit-test-integration-test-job:
   stage: test
