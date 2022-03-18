@@ -12,3 +12,6 @@ postgres_data/
 # production environment
 .env.staging
 .env.staging.proxy-companion
+
+#gitlab runner
+.gitlab-ci.yml
