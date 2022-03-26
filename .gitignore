@@ -9,6 +9,9 @@ __pycache__/
 postgres_data/
 *.sqlite*
 
+# Selenium
+chromedriver*
+
 # production environment
 .env.staging
 .env.staging.proxy-companion
