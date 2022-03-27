@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag, override_settings
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
