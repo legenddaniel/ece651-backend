@@ -13,9 +13,6 @@ WORKDIR /code
 # Install Django dependencies.
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
-    # &&\
-    # wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&\
-    # sudo apt install ./google-chrome-stable_current_amd64.deb
 
 # Copy code to docker container
 COPY . /code/

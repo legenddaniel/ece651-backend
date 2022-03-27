@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # We basically create macro for docker-compose
-DOCKER="docker"
 COMPOSE="docker-compose"
 BACKEND="app"
 
@@ -39,11 +38,6 @@ if [ $# -gt 0 ]; then
         $COMPOSE exec $BACKEND coverage run manage.py test $@
     elif [ "$1" == "coverage-html" ]; then
         $COMPOSE exec $BACKEND coverage html
-    elif [ "$1" == "selenium" ]; then
-        # if [ "$2" == "start" ]; then
-        $DOCKER run -d -p 4444:4444 -v /dev/shm:/dev/shm --shm-size=4g selenium/standalone-chrome:86.0
-        # elif [ "$2" == "test"]; then
-        # fi
     else
         helper
         exit 1
