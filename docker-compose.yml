@@ -2,6 +2,9 @@ version: '3.8'
 
 services:
   app:
+    environment:
+      SELENIUM_HOST: http://selenium:4444/wd/hub
+      TEST_SELENIUM: 'yes'
     build: .
     command: ./entrypoint.sh
     volumes:
@@ -10,10 +13,10 @@ services:
       - 8000:8000
     depends_on:
       - db
+      - selenium
     env_file:
       - ./.env
-    # extra_hosts:
-    #   - host.docker.internal:172.17.0.1
+
   db:
     image: postgres:14
     volumes:
@@ -24,10 +27,9 @@ services:
       - ./.env
 
   selenium:
-    image: selenium/standalone-chrome
+    image: selenium/standalone-chrome-debug
     ports:
-      - 4444:4444
-      # - 4200:4200
+      - "5901:5900"
     shm_size: 2g
 
 volumes:
