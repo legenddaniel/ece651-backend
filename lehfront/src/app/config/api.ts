@@ -1,6 +1,6 @@
 import { environment } from 'src/environments/environment';
 
-export const baseUrl = 'http://app:8000/api/';
+export const baseUrl = 'http://app:8001/api/';
 export const productsUrl = baseUrl + 'products/';
 export const recipesUrl = baseUrl + 'recipes/';
 export const cartUrl = baseUrl + 'cart/';

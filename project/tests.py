@@ -1,13 +1,16 @@
 from .setup_test import AbstractTestSetup
 
-from django.test import TestCase
+from django.test import TestCase, LiveServerTestCase, override_settings
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import alert_is_present
+import os
 
-
-class IntegrationTest(TestCase, AbstractTestSetup):
+# os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS']='0.0.0.0:8001'
+@override_settings(ALLOWED_HOSTS=['*'])
+class IntegrationTest(LiveServerTestCase, AbstractTestSetup):
+    # live_server_url = 'http://0.0.0.0:8001'
     @classmethod
     def setUp(self):
         AbstractTestSetup.setup_webdriver(self)
@@ -29,22 +32,22 @@ class IntegrationTest(TestCase, AbstractTestSetup):
 
         # Sign up
         self.assertEqual(len(User.objects.filter(email=EMAIL)), 0)
-
         self.browser.get(self.fe)
-        loginbtn = self.browser.find_element_by_css_selector("a#fontLogin")
+        loginbtn = self.browser.find_element_by_css_selector("a#fontSignup")
         loginbtn.click()
-        print("clicked")
-        print(self.browser.title)
+        print("page title is "+self.browser.title)
         form = self.browser.find_element(by=By.CSS_SELECTOR, value='form')
         form.find_element(by=By.ID, value='email').send_keys(EMAIL)
         form.find_element(by=By.ID, value='name').send_keys(USERNAME)
         form.find_element(by=By.ID, value='password').send_keys(PASSWORD)
         form.find_element(by=By.CSS_SELECTOR,
                           value='button.btn[type=submit]').click()
-        WebDriverWait(self.browser, 5).until(
-            lambda x: form.find_element(by=By.CSS_SELECTOR, value='.succ > a.login'))
-
-        user = User.objects.get(email=EMAIL)
+        # WebDriverWait(self.browser, 5).until(
+        #     lambda x: form.find_element(by=By.CSS_SELECTOR, value='.succ > a.login'))
+        print(self.live_server_url)
+        print(User.objects.filter(email=EMAIL))
+        user = User.objects.filter(email=EMAIL)
+        # user = User.objects.get(email=EMAIL)
         self.assertEqual(user.username, USERNAME)
 
         # Log in

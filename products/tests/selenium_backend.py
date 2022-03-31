@@ -31,13 +31,14 @@ class SeleniumTest(StaticLiveServerTestCase):
         super().tearDown()
 
     def test_backend_product_title(self):
+        print(self.live_server_url)
         self.browser.get(self.live_server_url+"/api/products/")
         self.assertIn(self.browser.title, 'Products – Django REST framework')
         content = self.browser.find_element_by_class_name('page-header')
         self.assertIn(content.text, 'Products')
 
-    def test_lehstore_product_price(self):
-        self.browser.get("http://lehstore")
-        price_element = self.browser.find_element_by_class_name('price')
-        price = price_element.text
-        self.assertEqual(price, '$12.69')
+    # def test_lehstore_product_price(self):
+    #     self.browser.get("http://lehstore")
+    #     price_element = self.browser.find_element_by_class_name('price')
+    #     price = price_element.text
+    #     self.assertEqual(price, '$12.69')
