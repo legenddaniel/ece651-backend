@@ -8,6 +8,8 @@ import os
 import socket
 from django.conf import settings
 from project.setup_test import AbstractTestSetup
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.expected_conditions import alert_is_present
 
 os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS']='0.0.0.0:8001'
 
@@ -40,9 +42,37 @@ class SeleniumTest(StaticLiveServerTestCase):
     #     content = self.browser.find_element_by_class_name('page-header')
     #     self.assertIn(content.text, 'Products')
 
-    def test_products(self):
-        print(self.live_server_url)
-        # self.browser.get(self.live_server_url+'/api/products/?name=test1/')
-        self.browser.get('http://lehstore')
-        print(self.browser.page_source)
+    # def test_products(self):
+    #     print(self.live_server_url)
+    #     # self.browser.get(self.live_server_url+'/api/products/?name=test1/')
+    #     self.browser.get('http://lehstore')
+    #     print(self.browser.page_source)
+
+    def test_user(self):
+        EMAIL = 'test@test.com'
+        USERNAME = 'test'
+        PASSWORD = '12345678'
+        '''
+        Sign up, then sign in, then add/modify the shipping address
+        '''
+
+        from users.models import User
+        from knox.models import AuthToken
+
+        # Sign up
+        self.assertEqual(len(User.objects.filter(email=EMAIL)), 0)
+        self.browser.get("http://lehstore")
+        loginbtn = self.browser.find_element_by_css_selector("a#fontSignup")
+        loginbtn.click()
+        print("page title is "+self.browser.title)
+        form = self.browser.find_element(by=By.CSS_SELECTOR, value='form')
+        form.find_element(by=By.ID, value='email').send_keys(EMAIL)
+        form.find_element(by=By.ID, value='name').send_keys(USERNAME)
+        form.find_element(by=By.ID, value='password').send_keys(PASSWORD)
+        form.find_element(by=By.CSS_SELECTOR,
+                          value='button.btn[type=submit]').click()
+        WebDriverWait(self.browser, 5).until(
+            lambda x: form.find_element(by=By.CSS_SELECTOR, value='.succ > a.login'))
+        user = User.objects.get(email=EMAIL)
+        self.assertEqual(user.username, USERNAME)
 
