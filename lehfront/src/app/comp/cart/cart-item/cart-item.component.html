@@ -1,0 +1,7 @@
+<div class="cart-item" *ngIf="cartItem">
+  <div *ngIf="cartItem.product">>
+     <span> {{ cartItem.product.name }}</span> x <span>{{ cartItem.qty }}</span
+  >:
+    <strong>{{ cartItem.product.price | currency }}</strong>
+  </div>
+</div>

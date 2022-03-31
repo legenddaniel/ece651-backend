@@ -1,0 +1,115 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+.cart-item {
+  font-size: small;
+}
+
+.filters {
+  font-size: small;
+}
+
+.card,
+.form-control,
+.btn {
+  border-radius: 0;
+}
+
+.list-group-item:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.list-group-item:last-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.product-btn {
+  font-size: smaller;
+}
+
+.fa-heart {
+  color: palevioletred;
+  cursor: pointer;
+}
+
+.guest-form-card h2 {
+  text-transform: uppercase;
+  font-size: medium;
+}
+
+.guest-form-card label {
+  font-size: small;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  cursor: not-allowed;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  margin: 0;
+  padding-bottom: 25vh;
+  box-sizing: border-box;
+}
+
+footer {
+  margin-top: 50px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+footer.container {
+  background-color: #f5f5f5;
+}
+
+.bg-green {
+  background: mediumseagreen;
+}
+
+.avatar {
+  font-size: 1rem;
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  color: #fff;
+  border-radius: 50%;
+  background-color: #adb5bd;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.avatar-sm {
+  font-size: 0.875rem;
+  width: 36px;
+  height: 36px;
+}
+
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
+h3 {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+div .section {
+  margin-top: 40px;
+}
+
+
+body {
+  opacity: 1;
+  background-image: linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.5)), url('assets/bgImage.jpg');
+  background-repeat: repeat;
+}

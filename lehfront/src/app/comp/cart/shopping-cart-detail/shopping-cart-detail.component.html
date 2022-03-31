@@ -1,0 +1,71 @@
+<div class="container bg-white">
+  <div class="row justify-content-between">
+    <div>
+      <span class="fs-5 fw-bold" style="color: #00008b">Your account > </span>
+      <span class="fs-5 fw-bold" style="color: #b22222"
+      >Your shopping cart list</span
+      >
+    </div>
+    <h2 class="fs-2 top-m10">Your shopping cart list</h2>
+  </div>
+
+  <div *ngFor="let it of kart" class="row top-m10 p-4 justify-content-between border border-success">
+    <div class="col-3">
+      <img
+        alt="IMG"
+        class="rounded-circle product-image"
+        src="{{it.product.image_url}}"
+        width="100%"
+      />
+    </div>
+    <div class="col-8">
+      <div class="row justify-content-between">
+        <div class="fs-5 fw-bold">{{it.product.name}}</div>
+        <div class="fs-5"><span>{{ it.product.price | currency }} x {{it.quantity}}
+          = {{ it.product.price * it.quantity | currency }}</span></div>
+      </div>
+      <div class="row top-m10">
+        <div class="col-12">
+          <p class="text-wrap text-break">{{it.product.description}}</p>
+        </div>
+      </div>
+      <button
+        class="col-3 btn btn-danger m-2 btn-sm rounded-3"
+        id="delete-btn"
+      (click)="delete(it.id)">
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <button
+      class="btn btn-success rounded"
+      id="checkout-btn"
+      (click)="checkoutdetail.hidden = !checkoutdetail.hidden"
+    >
+      proceed to checkout
+    </button>
+  </div>
+
+  <div class="row" style="margin-top:10vh;">
+    <div #checkoutdetail hidden>
+      <span class="fs-5 fw-bold" > Confirming your details</span> 
+      <div class="top-m10">Card number: {{card}}</div>
+      <div class="top-m10">Address: {{address}}</div>   
+      <div class="top-m10">price total: {{total_price | currency}}</div>
+      <div class="row mt-4">
+        <div class="col-4">
+          <button class="btn btn-success rounded" routerLink="/userdetail">
+            Change information
+          </button>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-success rounded" (click)="placeOrder()">Place my order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br style="height: 20vh">
+</div>

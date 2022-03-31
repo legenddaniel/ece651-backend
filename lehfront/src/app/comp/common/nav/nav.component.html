@@ -1,0 +1,67 @@
+<nav
+  class="navbar navbar-expand-md justify-content-center navbar-light fixed-top p-3 border-bottom shadow-sm"
+  id = "navBg"
+>
+  <div class="nav-content container">
+    <a class="navbar-brand" routerLink="/">L'EH </a>
+
+    <button
+      (click)="collapsedShow = !collapsedShow"
+      class="navbar-toggler collapsed"
+      type="button"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div
+      [ngClass]="collapsedShow ? 'show' : ''"
+      class="navbar-collapse collapse"
+    >
+      <div class="navbar-nav">
+        <a class="p-2 text-dark recipelist" routerLink="recipelist">Recipe</a>
+        <a class="p-2 text-dark productlist" routerLink="productlist">Product</a>
+      </div>
+      <div class="" style="margin: auto; display: flex">
+        <input
+          aria-label="Search"
+          class=""
+          placeholder="Search"
+          size="15"
+          style="min-width: 50vw"
+          type="text"
+          typeaheadOptionField="name"
+          [typeahead]="recipe"
+          [(ngModel)]="search_text"
+          (typeaheadOnSelect)="look()"
+        />
+        <a class="btn btn-primary"
+           [routerLink]="['/search', search_text]"
+        >Search</a>
+      </div>
+
+      <div class="navbar-nav" *ngIf="!ifLogin" >
+        <a class="p-2 login navbar-nav" id="fontLogin" routerLink="login">login</a>
+        <a class="p-2 signup navbar-nav" id="fontSignup" routerLink="signup">signup</a>
+      </div>
+      <a
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="nav-link pr-0 userDetail"
+        data-toggle="dropdown"
+        role="button"
+        routerLink="userdetail"
+        *ngIf="ifLogin"
+      >
+        <div class="media align-items-center" style="display: flex">
+          <span class="avatar avatar-sm rounded-circle">
+            <img alt="IMG" src="../../../../assets/profile.jpg" />
+          </span>
+          <div class="media-body ml-2 d-none d-lg-block">
+            <span class="mb-0 text-sm font-weight-bold username" style="margin-left:10px;"> {{username}} </span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</nav>
+<div class="space-taker" style="margin-bottom: 100px"></div>

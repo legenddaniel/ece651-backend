@@ -1,0 +1,41 @@
+<div class="container">
+  <form class="form"
+        method="post">
+    <div class="h1 text-center title">Log In</div>
+    <div class="row flex justify-content-center">
+      <div class="col-lg-4 col-sm-6">
+        <label class="text-center" for="email">Email : </label>
+        <input class="form-control"
+               type="text"
+               id="email"
+               name="email"
+               [(ngModel)]="email"
+               />
+      </div>
+    </div>
+
+    <div class="row flex justify-content-center">
+      <div class="col-lg-4 col-sm-6">
+        <label for="password">Password: </label>
+        <input class="form-control"
+               type = "password"
+               id="password"
+               name="password"
+               [(ngModel)]="password"
+        />
+      </div>
+    </div>
+
+    <div class="row flex justify-content-center" style="margin-top:30px;">
+      <div class="col-lg-2 col-sm-4 nav flex-column justify-content-center">
+        <button type="submit"
+                class="btn btn-success rounded"
+                (click) = "signIn()">
+          Sign in
+        </button>
+      </div>
+    </div>
+
+    <div class="fail" *ngIf="isLoginFailed">Login failed,please try again! {{err_msg}}</div>
+  </form>
+</div>

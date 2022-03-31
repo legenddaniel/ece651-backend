@@ -1,0 +1,17 @@
+<div class="container">
+  <h3>Recipe: "{{key}}"</h3>
+  <div class="row">
+    <div *ngFor="let recipe of recipeCandidates" class="col-lg-3 col-md-4 col-sm-6">
+      <app-recipe
+        [recipeItem]="recipe"
+      ></app-recipe>
+    </div>
+  </div>
+
+  <h3>Product: "{{key}}"</h3>
+  <div class="row">
+    <div *ngFor="let product of productCandidates" class="col-lg-2 col-md-3 col-sm-4">
+      <app-product-item [productItem]="product"></app-product-item>
+    </div>
+  </div>
+</div>

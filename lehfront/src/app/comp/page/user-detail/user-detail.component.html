@@ -1,0 +1,141 @@
+<div class="container">
+  <div class="row justify-content-between top-p30">
+    <div
+      class="col-md-5 border border-success nav flex-column justify-content-center"
+    >
+      <div class="row justify-content-evenly">
+        <div class="col-md-5">
+          <img
+            alt="IMG"
+            class="rounded-circle"
+            src="/assets/profile.jpg"
+            style="height: 100%; width: 100%; padding: 5px"
+          />
+        </div>
+        <div
+          class="col-md-6 nav flex-column justify-content-center "
+        >
+          <p class="fs-4 name">{{ userInfo.username }}</p>
+          <p class="fs-5" style="color:gray">{{ userInfo.email }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 border border-success p-2" *ngIf = "isChanging">
+      <div class="form-floating mb-3">
+        <input type="cardID" class="form-control" id="floatingcardID" placeholder="cardId" [(ngModel)] = "cardID">
+        <label for="floatingcardID">cardID</label>
+      </div>
+      <div class="row justify-content-between">
+        <div class="form-floating mb-3 col-8">
+          <input type="address" class="form-control" id="floatingAddress" placeholder="address" [(ngModel)] = "address">
+          <label for="floatingAddress">Address</label>
+        </div>
+        <div class="form-floating col-4 mb-3">
+          <select class="form-select" id="floatingSelect" aria-label="Floating label select province" [(ngModel)] = "province">
+            <option value="AB">AB</option>
+            <option value="BC">BC</option>
+            <option value="MB">MB</option>
+            <option value="NB">NB</option>
+            <option value="NS">NS</option>
+            <option value="NL">NL</option>
+            <option value="ON" selected = "true">ON</option>
+            <option value="Pe">Pe</option>
+            <option value="QC">QC</option>
+            <option value="SK">SK</option>
+          </select>
+          <label for="floatingSelect">Province</label>
+        </div>
+      </div>
+      <div class="row justify-content-between">
+        <div class="form-floating col-8 mb-3">
+          <input type="phoneNum" class="form-control" id="floatingPhoneNum" placeholder="telephone" [(ngModel)] = "telephone">
+          <label for="floatingPhoneNum">Phone number</label>
+        </div>
+        <div class="form-floating col-4 mb-3">
+          <input type="postalCode" class="form-control" id="floatingPostalCode" placeholder="postal_code" [(ngModel)] = "postal_code">
+          <label for="floatingPostalCode">Postal code</label>
+        </div>
+      </div>
+<!--      <div class="fail" *ngIf="!isUpdateSucc">Fail to submit,please try again!{{err_msg}} </div>-->
+      <button
+        class="btn btn-outline-success m-2 btn-md rounded-pill"
+        id="submit-btn"
+        type="button"
+        (click)="Submit()"
+      >
+        <strong>Submit</strong>
+      </button>
+
+    </div>
+    <div class="col-md-6 border border-success" *ngIf = "!isChanging">
+      <!--  用户个人信息-->
+      <div class="p-2 text-wrap">
+        <span class="fs-5">card number: </span>
+        <span class="emptyContent" id="cardEmpty" *ngIf="ifcardNull">{{emptyString}}</span>
+        <span class="fs-5 cardId" *ngIf="!ifcardNull">{{userInfo.credit_card}}</span>
+      </div>
+      <div class="p-2 text-wrap">
+        <span class="fs-5">address: </span>
+        <span  class="emptyContent" id="shippingAddress" *ngIf="ifaddressNull">{{emptyString}}</span>
+        <span class="fs-5 shippingAddress" *ngIf="!ifaddressNull">{{userInfo.shipping_address.address}}, {{userInfo.shipping_address.province}}, {{userInfo.shipping_address.postal_code}}</span>
+      </div>
+      <div class="p-2 text-wrap">
+        <span class="fs-5">telephone: </span>
+        <span class="emptyContent" id="telephone" *ngIf="iftelephoneNull">{{emptyString}}</span>
+        <span class="fs-5 telephone" *ngIf="!iftelephoneNull">{{userInfo.shipping_address.phone_number}}</span>
+      </div>
+      <button
+        class="btn btn-outline-success m-2 btn-md rounded-pill change"
+        id="change-btn"
+        type="button"
+        (click)="Change()"
+      >
+        <strong>Change</strong>
+      </button>
+    </div>
+  </div>
+
+  <div class="row top-m30">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-2 remove-padding">
+          <img
+            alt="shopping-cart-icon"
+            src="../../../../assets/shopping-cart-icon.jpg"
+            style="height: 100%; width: 100%"
+          />
+        </div>
+        <div
+          class="col-md-8 remove-padding bg-warning bg-opacity-25 fw-bold nav flex-column justify-content-center align-items-center"
+        >
+          <a [routerLink]="['/shoppingcartDetail']" class="shoppingCart" style="padding-left: 0; color: Gold; max-width: 250px">
+            your shopping cart list
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-2 remove-padding">
+          <img
+            alt="order-icon"
+            src="../../../../assets/order-icon.jpg"
+            style="height: 100%; width: 100%"
+          />
+        </div>
+
+        <div
+          class="col-md-10 remove-padding bg-primary bg-opacity-25 fw-bold nav flex-column justify-content-center align-items-center"
+        >
+          <a
+            class="orderList"
+            [routerLink]="['/ordersDetail']"
+            style="padding-left: 0; color: RoyalBlue; max-width: 250px"
+          >
+            your orders list
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

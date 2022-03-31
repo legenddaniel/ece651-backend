@@ -31,6 +31,10 @@ class IntegrationTest(TestCase, AbstractTestSetup):
         self.assertEqual(len(User.objects.filter(email=EMAIL)), 0)
 
         self.browser.get(self.fe)
+        loginbtn = self.browser.find_element_by_css_selector("a#fontLogin")
+        loginbtn.click()
+        print("clicked")
+        print(self.browser.title)
         form = self.browser.find_element(by=By.CSS_SELECTOR, value='form')
         form.find_element(by=By.ID, value='email').send_keys(EMAIL)
         form.find_element(by=By.ID, value='name').send_keys(USERNAME)

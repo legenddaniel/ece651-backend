@@ -1,0 +1,20 @@
+.row {
+  margin-top: 15px;
+}
+
+.container {
+  position: relative;
+  padding-top: 15vh;
+}
+
+.fail {
+  opacity: 0.7;
+  margin: 10px;
+  padding: 10px;
+  border-style: solid;
+  border-color: red;
+  background: #ffb6c1;
+  text-align: center;
+  border-radius: 5px;
+  color: red;
+}

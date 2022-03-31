@@ -1,0 +1,21 @@
+<!--<a [routerLink]="['/productdetail']" [queryParams] = "{product-item:productItem}">-->
+<a [routerLink]="['/productdetail', productItem.id]">
+  <div class="card shadow-sm">
+    <img
+      class="bd-placeholder-img card-img-top p-2 cover"
+      style="min-width:150px; height:200px;"
+      [src]="productItem.image_url"
+    />
+    <div class="card-header">
+      <span *ngIf="productItem.name.length <= 16" class="nameLess">{{productItem.name}}</span>
+      <span *ngIf="productItem.name.length > 16" class="nameGreater">{{productItem.name | slice: 0:16 }}...</span>
+    </div>
+    <div class="card-body" style="min-height:210px;" >
+      <p class="card-text">
+        <strong class="price">{{ productItem.price | currency }}</strong>
+      </p>
+      <span *ngIf="productItem.description.length <= 90" class="lessEqual">{{productItem.description}}</span>
+      <span *ngIf="productItem.description.length > 90" class="greater">{{productItem.description | slice: 0:90 }}...</span>
+    </div>
+  </div>
+</a>

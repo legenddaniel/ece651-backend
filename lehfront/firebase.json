@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "lehstore",
+    "public": "dist/lehstore/",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
