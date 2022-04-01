@@ -2,22 +2,16 @@ version: '3.8'
 
 services:
   app:
-    environment:
-      SELENIUM_HOST: http://selenium:4444/wd/hub
-      TEST_SELENIUM: 'yes'
     build: .
     command: ./entrypoint.sh
     volumes:
       - ./:/code/
     ports:
       - 8000:8000
-      - 8001:8001
     depends_on:
       - db
-      - selenium
     env_file:
       - ./.env
-
   db:
     image: postgres:14
     volumes:
@@ -26,20 +20,5 @@ services:
       - "5432:5432"
     env_file:
       - ./.env
-
-  selenium:
-    image: selenium/standalone-chrome-debug
-    ports:
-      - "5901:5900"
-    shm_size: 2g
-
-  lehstore:
-    container_name: lehstore
-    build: ./lehfront
-    ports:
-      - "4200:80"
-    links:
-      - "app:app"
-
 volumes:
   postgres_data:
