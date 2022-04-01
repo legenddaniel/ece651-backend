@@ -65,3 +65,13 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
 - *Retrieve an order: `/api/orders/<order_id>/` GET
 - *Create new order: `/api/orders/` POST `{ status: 'unpaid', order_items: [{ product_id: 1, quantity: 2 }, { product_id: 2, quantity: 1 }] }`
 - *Update an order: `/api/orders/<order_id>/` PATCH `{ status: 'cancelled' }` Currently regard `status=cancelled` as deleting order
+
+# Selenium System Test
+- Selenium system tests (**@tag(selenium-system)**):
+    1. user signup => user login => add shipping address => change shipping address
+    2. user signup => user login => search for a product => add it to cart => add address => place order
+- To run selenium system tests:
+    1. remove all existing L'EH-related running containers 
+    2. `docker-compose -f docker-compose.selenium.yml run --name app --rm app python3 manage.py test --teg=selenium-system`
+    3. `docker-compose -f docker-compose.selenium.yml down`
+- Each selenium system test should be placed in a separate test file to avoid driver error.
