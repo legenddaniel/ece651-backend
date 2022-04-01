@@ -28,12 +28,12 @@ class SeleniumTest(StaticLiveServerTestCase):
         self.browser.quit()
         super().tearDown()
 
-    def test_backend_product_title(self):
-        print(self.live_server_url)
-        self.browser.get(self.live_server_url+"/api/products/")
-        self.assertIn(self.browser.title, 'Products – Django REST framework')
-        content = self.browser.find_element_by_class_name('page-header')
-        self.assertIn(content.text, 'Products')
+    # def test_backend_product_title(self):
+    #     print(self.live_server_url)
+    #     self.browser.get(self.live_server_url+"/api/products/")
+    #     self.assertIn(self.browser.title, 'Products – Django REST framework')
+    #     content = self.browser.find_element_by_class_name('page-header')
+    #     self.assertIn(content.text, 'Products')
 
     # def test_lehstore_product_price(self):
     #     self.browser.get("http://lehstore")

@@ -15,8 +15,13 @@ services:
     depends_on:
       - db
       - selenium
+      - lehstore
     env_file:
       - ./.env
+    networks:
+      main:
+        aliases:
+          - app
 
   db:
     image: postgres:14
@@ -26,20 +31,33 @@ services:
       - "5432:5432"
     env_file:
       - ./.env
+    networks:
+      main:
+        aliases:
+          - db
 
   selenium:
     image: selenium/standalone-chrome-debug
     ports:
       - "5901:5900"
     shm_size: 2g
+    networks:
+      main:
+        aliases:
+          - selenium
 
   lehstore:
     container_name: lehstore
     build: ./lehfront
     ports:
       - "4200:80"
-    links:
-      - "app:app"
+    networks:
+      main:
+        aliases:
+          - lehstore
 
 volumes:
   postgres_data:
+
+networks:
+  main:
