@@ -20,7 +20,8 @@ variables:
 stages:
   - pre-build
   - build
-  - test
+  - unit-n-integration-test
+  - system-test
   - dev-deploy
 
 pre-build-job:
@@ -66,7 +67,7 @@ build-job:
     - ece651
 
 unit-test-integration-test-job:
-  stage: test
+  stage: unit-n-integration-test
   only:
     - master
   script:
@@ -91,7 +92,7 @@ unit-test-integration-test-job:
     - ece651
 
 system-test-job:
-  stage: test
+  stage: system-test
   only:
     - master
   script:
