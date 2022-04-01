@@ -108,8 +108,7 @@ system-test-job:
     - echo "SQL_HOST=$SQL_HOST" >> .env
     - echo "SQL_PORT=$SQL_PORT" >> .env
     - sudo docker-compose -f docker-compose.selenium.yml build
-    - sudo docker-compose -f docker-compose.selenium.yml up -d
-    - sudo ./leh django test project.tests
+    - sudo docker-compose -f docker-compose.selenium.yml run --name app --rm app python3 manage.py test --tag=selenium
     - sudo docker-compose -f docker-compose.selenium.yml down
     - echo "System tests passed"
   tags:
