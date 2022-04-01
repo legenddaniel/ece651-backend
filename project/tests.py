@@ -1,6 +1,6 @@
 from .setup_test import AbstractTestSetup
 
-from django.test import TestCase, LiveServerTestCase, override_settings
+from django.test import TestCase, LiveServerTestCase, override_settings, tag
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -10,6 +10,7 @@ import os
 from time import sleep
 
 os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS']='0.0.0.0:8001'
+@tag('selenium')
 @override_settings(ALLOWED_HOSTS=['*'])
 class IntegrationTest(LiveServerTestCase, AbstractTestSetup):
     @classmethod

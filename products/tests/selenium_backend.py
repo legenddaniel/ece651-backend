@@ -10,11 +10,9 @@ from django.conf import settings
 
 os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS']='0.0.0.0:8000'
 
-@tag('selenium-backend')
+@tag('selenium')
 @override_settings(ALLOWED_HOSTS=['*'])
 class SeleniumTest(StaticLiveServerTestCase):
-    print(socket.gethostname())
-    print(socket.gethostbyname(socket.gethostname()))
     live_server_url = 'http://{}:8000'.format(socket.gethostbyname(socket.gethostname()))
 
     def setUp(self):
