@@ -23,7 +23,7 @@ class SystemTestOrder(LiveServerTestCase, AbstractTestSetup):
         self.browser.quit()
 
     def test_search_cart_order(self):
-        print("\nStarting system test for: user signup => user login => search for a product => add to cart => place order")
+        print("\nStarting system test for: user signup => user login => search for a product => add to cart => add address => place order")
         SEARCH = 'te'
         EMAIL = 'test@test.com'
         USERNAME = 'test'
