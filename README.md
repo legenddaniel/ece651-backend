@@ -71,7 +71,7 @@ __[function]: [endpoint] [method] [[payload] [comment]]__
     1. user signup => user login => add shipping address => change shipping address
     2. user signup => user login => search for a product => add it to cart => add address => place order
 - To run selenium system tests:
-    3. remove all existing L'EH-related running containers 
-    4. `docker-compose -f docker-compose.selenium.yml run --name app --rm app python3 manage.py test --teg=selenium-system`
-    5. `docker-compose -f docker-compose.selenium.yml down`
+    1. remove all existing L'EH-related running containers 
+    2. `docker-compose -f docker-compose.selenium.yml run --name app --rm app python3 manage.py test --teg=selenium-system`
+    3. `docker-compose -f docker-compose.selenium.yml down`
 - Each selenium system test should be placed in a separate test file to avoid driver error.
