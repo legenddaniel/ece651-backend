@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 
-@tag('selenium')
+# @tag('selenium')
 @override_settings(ALLOWED_HOSTS=['*'])
 class SeleniumTest(TestCase):
     def setUp(self):

@@ -1,23 +1,20 @@
-from .setup_test import AbstractTestSetup
-
+from project.setup_test import AbstractTestSetup
 from django.test import TestCase, LiveServerTestCase, override_settings, tag
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import alert_is_present
 from django.conf import settings
 import os
 from time import sleep
-
 os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS']='0.0.0.0:8001'
-@tag('selenium')
+@tag('selenium-system')
 @override_settings(ALLOWED_HOSTS=['*'])
-class IntegrationTest(LiveServerTestCase, AbstractTestSetup):
+class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
     @classmethod
     def setUpClass(cls):
         cls.host = "0.0.0.0"
         cls.port = 8001
-        super(IntegrationTest, cls).setUpClass()
+        super(SystemTestUser, cls).setUpClass()
         settings.DEBUG = True
         AbstractTestSetup.setup_webdriver(cls)
         AbstractTestSetup.setup_products(cls)
@@ -26,6 +23,7 @@ class IntegrationTest(LiveServerTestCase, AbstractTestSetup):
         self.browser.quit()
 
     def test_signup_signin_address(self):
+        print("\nStarting system test for: user signup => user login => add shipping address => change shipping address")
         EMAIL = 'test@test.com'
         USERNAME = 'test'
         PASSWORD = '12345678'
@@ -61,10 +59,9 @@ class IntegrationTest(LiveServerTestCase, AbstractTestSetup):
         form.find_element(by=By.ID, value='password').send_keys(PASSWORD)
         form.find_element(by=By.CSS_SELECTOR,
                           value='button.btn[type=submit]').click()
-
-        # WebDriverWait(self.browser, 5).until(
-        #     lambda x: x.current_url == self.fe)
-        sleep(2)
+        WebDriverWait(self.browser, 5).until(
+            lambda x: self.browser.find_element_by_xpath("//a[@class='nav-link pr-0 userDetail']"))
+        self.assertEqual(len(AuthToken.objects.filter(user=user)), 1)
         self.assertEqual(len(AuthToken.objects.filter(user=user)), 1)
 
         # Add shipping address
