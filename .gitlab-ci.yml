@@ -84,7 +84,7 @@ unit-test-integration-test-job:
     - echo "SQL_HOST=$SQL_HOST" >> .env
     - echo "SQL_PORT=$SQL_PORT" >> .env
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py migrate
-    - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py test
+    - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py test --exclude-tag=selenium
     - echo "Unit tests & intergation tests passed"
   tags:
     - ece651

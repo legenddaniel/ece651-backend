@@ -13,7 +13,7 @@ from selenium.webdriver.support.expected_conditions import alert_is_present
 
 os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS']='0.0.0.0:8001'
 
-@tag('selenium-backend')
+@tag('selenium')
 @override_settings(ALLOWED_HOSTS=['*'])
 class SeleniumTest(StaticLiveServerTestCase):
     live_server_url = 'http://{}:8001'.format(socket.gethostbyname(socket.gethostname()))
