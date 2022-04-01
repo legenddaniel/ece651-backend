@@ -1,0 +1,80 @@
+<div class="container" *ngIf="recipeItem">
+  <div class="row" style="margin-bottom:10px;">
+    <div class="col-md-6">
+      <img
+        [src]="recipeItem.image_url"
+        class="border border-success bd-placeholder-img card-img-top p-2 cover"
+        style="max-height:500px;"
+      />
+    </div>
+    <div class="col-md-6">
+      <div class="fs-2">
+        <strong class="name">{{ recipeItem.name }}</strong>
+      </div>
+      <div class="fs-4">
+        <rating [(ngModel)]="recipeItem.rating" [max]="5" [readonly]="true"></rating>
+        ({{ recipeItem.total_reviews }})
+      </div>
+      <div class="des" style="margin:20px 0;">
+        {{ recipeItem.description }}
+      </div>
+      <button
+        class="btn btn-success rounded-pill"
+        id="buttonNot"
+        disabled = "!ifLogin"
+        *ngIf = "!ifLogin">Add Ingredients to Cart
+      </button>
+      <button
+        class="btn btn-success rounded-pill"
+        id="buttonAdd"
+        (click)="handleAddAllToCart()"
+        *ngIf = "ifLogin">Add Ingredients to Cart
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <h3>Products</h3>
+    <div class="ml-2">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Ingredients</th>
+          <th scope="col">Quantity</th>
+        </tr>
+        <tr *ngFor="let it of recipeItem.details['quantity'] | keyvalue; index as i">
+          <th scope="row">{{i + 1}}</th>
+          <td>{{it.key}}</td>
+          <td>{{it.value}}</td>
+        </tr>
+        </thead>
+      </table>
+    </div>
+
+    <h3>Instruction</h3>
+    <div class="ml-2">
+      <ol class="mx-2">
+        <li *ngFor="let it of recipeItem.details['instruction']"> {{it}}</li>
+      </ol>
+    </div>
+
+    <h3>Nutrients</h3>
+    <div class="ml-2">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nutrients</th>
+          <th scope="col">Quantity</th>
+        </tr>
+        <tr *ngFor="let it of recipeItem.details['nutrients'] | keyvalue; index as i">
+          <th scope="row">{{i + 1}}</th>
+          <td>{{it.key}}</td>
+          <td>{{it.value}}</td>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>

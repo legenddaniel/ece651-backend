@@ -1,0 +1,13 @@
+h3 {
+  border-top-left-radius: 2em;
+  border-top-right-radius: 2em;
+  font-weight: bold;
+  font-style: italic;
+  padding: 10px;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Times New Roman', Georgia, Serif, serif;
+  background-color: LightGreen;
+  color: DarkGreen;
+}

@@ -1,0 +1,31 @@
+#delete-btn {
+  float: right;
+}
+
+#checkout-btn {
+  position: absolute;
+  right: 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.remove-padding {
+  padding: 0;
+}
+
+.top-m10 {
+  margin-top: 10px;
+}
+
+.top-m5 {
+  margin-top: 5px;
+}
+
+.product-image {
+  max-width: 250px;
+}

@@ -1,0 +1,30 @@
+h3 {
+  border-top-left-radius: 2em;
+  border-top-right-radius: 2em;
+  font-weight: bold;
+  font-style: italic;
+  font-family: 'Times New Roman', Georgia, Serif, serif;
+}
+
+#HotItems {
+  background-color: LightGreen;
+  color: DarkGreen;
+}
+
+.HotItemsContent {
+  margin-left: 20px;
+}
+
+#Recipe {
+  background-color: ForestGreen;
+  color: White;
+}
+
+#Produce {
+  background-color: DarkGreen;
+  color: White;
+}
+
+.row {
+  margin-bottom: 8vh;
+}

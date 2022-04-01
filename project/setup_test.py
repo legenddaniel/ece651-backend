@@ -8,6 +8,14 @@ class AbstractTestSetup(ABC):
     '''
 
     @staticmethod
+    def setup_webdriver(self):
+        from selenium import webdriver
+        from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+        self.browser = webdriver.Remote("http://selenium:4444/wd/hub", DesiredCapabilities.CHROME)
+        self.fe = 'http://lehstore'
+
+    @staticmethod
     def setup_superuser(self, email='admin@test.com', password='12345678'):
         from users.models import User
 

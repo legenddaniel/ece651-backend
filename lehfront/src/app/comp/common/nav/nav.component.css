@@ -1,0 +1,32 @@
+input {
+  width: auto;
+}
+.mr-auto,
+.mx-auto {
+  margin-right: auto !important;
+}
+
+nav {
+  margin-bottom: 10px;
+  background: white;
+}
+
+.space-taker {
+  margin-bottom: 100px;
+}
+
+#navBg {
+  background: #c8ffc8;
+}
+
+#fontLogin {
+  color: #2f4f4f;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+#fontSignup {
+  color: #2f4f4f;
+  font-style: italic;
+  text-decoration: underline;
+}

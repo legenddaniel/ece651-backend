@@ -1,0 +1,23 @@
+h3 {
+  border-top-left-radius: 2em;
+  border-top-right-radius: 2em;
+  font-weight: bold;
+  font-style: italic;
+  font-family: 'Times New Roman', Georgia, Serif, serif;
+  background: forestgreen;
+  color: white;
+}
+
+#buttonAdd {
+  float: right;
+  margin: 20px;
+}
+
+#buttonNot {
+  float: right;
+  margin: 20px;
+}
+
+.cover{
+  object-fit: cover;
+}

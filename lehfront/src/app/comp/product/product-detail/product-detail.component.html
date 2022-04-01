@@ -1,0 +1,50 @@
+<div class="container" *ngIf="productItem">
+  <div class="row p-md-3">
+    <div class="offset-md-1 col-md-4">
+      <img
+        [src]="productItem.image_url"
+        class="bd-placeholder-img card-img-top p-2 cover"
+        style="max-height:500px;"
+      />
+    </div>
+    <div class="col-md-6">
+      <div class="fs-1 pb-2">
+        <strong class = "name">{{ productItem.name }}</strong>
+      </div>
+      <div
+        class="fs-2 text-danger bg-secondary bg-opacity-10 p-2"
+      >
+        <strong class = "price">{{ productItem.price | currency }}</strong>
+      </div>
+      <div style="display: flex;" class="align-content-center mt-3 mb-3">
+        <ngx-number-spinner
+          [max]="999"
+          [min]="1"
+          [value]="product_qty"
+          (change)="product_qty=$event">
+        </ngx-number-spinner>
+        <button
+          class="btn btn-primary rounded-3 offset-1 buttonNot"
+          type="button"
+          (click)="addToKart()"
+          disabled = "!ifLogin"
+          *ngIf = "!ifLogin"
+        >
+          Add to cart
+        </button>
+        <button
+          class="btn btn-primary rounded-3 offset-1 buttonAdd"
+          type="button"
+          (click)="addToKart()"
+          *ngIf = "ifLogin"
+        >
+          Add to cart
+        </button>
+      </div>
+      <div>
+        {{ productItem.description }}
+      </div>
+    </div>
+  </div>
+</div>
+

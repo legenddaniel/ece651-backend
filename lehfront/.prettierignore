@@ -1,0 +1,8 @@
+build
+docs
+node_modules
+e2e
+coverage
+.angular
+dist
+*.html
