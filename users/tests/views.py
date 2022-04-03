@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 
 from project.setup_test import AbstractTestSetup
 
-'''
+
 class UserTest(APITestCase, AbstractTestSetup):
     @classmethod
     def setUpTestData(self):

@@ -6,7 +6,9 @@ from selenium.webdriver.support.expected_conditions import alert_is_present
 from django.conf import settings
 import os
 from time import sleep
-os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS']='0.0.0.0:8001'
+os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = '0.0.0.0:8001'
+
+
 @tag('selenium-system')
 @override_settings(ALLOWED_HOSTS=['*'])
 class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
@@ -18,6 +20,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
         settings.DEBUG = True
         AbstractTestSetup.setup_webdriver(cls)
         AbstractTestSetup.setup_products(cls)
+        AbstractTestSetup.setup_user(cls, signin=False)
 
     def tearDown(self):
         self.browser.quit()
@@ -40,15 +43,76 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
         loginbtn = self.browser.find_element_by_css_selector("a#fontSignup")
         loginbtn.click()
         form = self.browser.find_element(by=By.CSS_SELECTOR, value='form')
-        form.find_element(by=By.ID, value='email').send_keys(EMAIL)
-        form.find_element(by=By.ID, value='name').send_keys(USERNAME)
-        form.find_element(by=By.ID, value='password').send_keys(PASSWORD)
-        form.find_element(by=By.CSS_SELECTOR,
-                          value='button.btn[type=submit]').click()
-        WebDriverWait(self.browser, 5).until(
-            lambda x: form.find_element(by=By.CSS_SELECTOR, value='.succ > a.login'))
-        user = User.objects.get(email=EMAIL)
-        self.assertEqual(user.username, USERNAME)
+        tests = [
+            {
+                'data': {
+                    'email': self.user.email,
+                    'username': '123',
+                    'password': '12345678'
+                },
+                'wait': lambda y: WebDriverWait(self.browser, 5).until(
+                    lambda x: form.find_element(by=By.CSS_SELECTOR, value='.fail')),
+                'assertions': [
+                    # Existing user
+                    lambda res: self.assertEqual(
+                        len(User.objects.filter(email=self.user.email)), 1)
+                ]
+            },
+            {
+                'data': {
+                    'email': 'sdas',
+                    'username': '123',
+                    'password': '12345678'
+                },
+                'wait': lambda y: WebDriverWait(self.browser, 5).until(
+                    lambda x: form.find_element(by=By.CSS_SELECTOR, value='.fail')),
+                'assertions': [
+                    # Invalid email
+                    lambda res: self.assertEqual(
+                        len(User.objects.filter(email=self.user.email)), 1)
+                ]
+            },
+            {
+                'data': {
+                    'email': 'test2@test.com',
+                    'username': '123',
+                    'password': 'INSERT INTO users_user VALUES ()'
+                },
+                'wait': lambda y: WebDriverWait(self.browser, 5).until(
+                    lambda x: form.find_element(by=By.CSS_SELECTOR, value='.fail')),
+                'assertions': [
+                    # Invalid password
+                    lambda res: self.assertEqual(
+                        len(User.objects.filter(email=self.user.email)), 1)
+                ]
+            },
+            {
+                'data': {
+                    'email': EMAIL,
+                    'username': USERNAME,
+                    'password': PASSWORD
+                },
+                'wait': lambda y: WebDriverWait(self.browser, 5).until(
+                    lambda x: form.find_element(by=By.CSS_SELECTOR, value='.succ > a.login')),
+                'assertions': [
+                    # Valid email
+                    lambda res: self.assertEqual(user.username, USERNAME),
+                ]
+            },
+        ]
+        for test in tests:
+            for k in test['data']:
+                form.find_element(by=By.ID, value=k).send_keys(
+                    test['data']['k'])
+            form.find_element(by=By.CSS_SELECTOR,
+                              value='button.btn[type=submit]').click()
+            test['wait']()
+            for assertion in test['assertions']:
+                assertion()
+        # WebDriverWait(self.browser, 5).until(
+        #     lambda x: form.find_element(by=By.CSS_SELECTOR, value='.succ > a.login'))
+        # user = User.objects.get(email=EMAIL)
+        # self.assertEqual(user.username, USERNAME)
 
         # Log in
         self.browser.get(self.fe)
@@ -65,7 +129,8 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
         self.assertEqual(len(AuthToken.objects.filter(user=user)), 1)
 
         # Add shipping address
-        self.browser.find_element_by_xpath("//a[@class='nav-link pr-0 userDetail']").click()
+        self.browser.find_element_by_xpath(
+            "//a[@class='nav-link pr-0 userDetail']").click()
         self.browser.find_element(by=By.ID, value='change-btn').click()
         self.browser.find_element(
             by=By.ID, value='floatingcardID').send_keys('1111222211112222')

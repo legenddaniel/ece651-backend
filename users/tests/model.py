@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from project.setup_test import AbstractTestSetup
 
-'''
+
 class UserModelTest(TestCase, AbstractTestSetup):
 
     # Set up test
