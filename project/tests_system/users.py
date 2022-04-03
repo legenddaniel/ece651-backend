@@ -115,7 +115,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
 
     def test_signup_signin_address(self):
             print("\nStarting system test for: user signup => user login => add shipping address => change shipping address")
-            EMAIL = 'test@test.com'
+            EMAIL = 'test1@test.com'
             USERNAME = 'test'
             PASSWORD = '12345678'
             '''
