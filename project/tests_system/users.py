@@ -130,6 +130,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
             self.browser.get(self.fe + '/signup')
             # loginbtn = self.browser.find_element_by_css_selector("a#fontSignup")
             # loginbtn.click()
+            print(self.browser.current_url())
             form = self.browser.find_element(by=By.CSS_SELECTOR, value='form')
             tests = [
                 {
