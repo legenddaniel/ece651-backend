@@ -191,7 +191,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
             for test in tests:
                 for k in test['data']:
                     form.find_element(by=By.ID, value=k).send_keys(
-                        test['data']['k'])
+                        test['data'][k])
                 form.find_element(by=By.CSS_SELECTOR,
                                 value='button.btn[type=submit]').click()
                 test['wait']()
