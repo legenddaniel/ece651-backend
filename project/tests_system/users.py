@@ -135,7 +135,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
                 {
                     'data': {
                         'email': self.user.email,
-                        'username': '123',
+                        'name': '123',
                         'password': '12345678'
                     },
                     'wait': lambda y: WebDriverWait(self.browser, 5).until(
@@ -149,7 +149,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
                 {
                     'data': {
                         'email': 'sdas',
-                        'username': '123',
+                        'name': '123',
                         'password': '12345678'
                     },
                     'wait': lambda y: WebDriverWait(self.browser, 5).until(
@@ -163,7 +163,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
                 {
                     'data': {
                         'email': 'test2@test.com',
-                        'username': '123',
+                        'name': '123',
                         'password': 'INSERT INTO users_user VALUES ()'
                     },
                     'wait': lambda y: WebDriverWait(self.browser, 5).until(
@@ -177,7 +177,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
                 {
                     'data': {
                         'email': EMAIL,
-                        'username': USERNAME,
+                        'name': USERNAME,
                         'password': PASSWORD
                     },
                     'wait': lambda y: WebDriverWait(self.browser, 5).until(
