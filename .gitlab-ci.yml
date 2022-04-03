@@ -47,7 +47,6 @@ build-job:
   stage: build
   only:
     - master
-    - PER31-more-tests
   script:
     - echo Building project...
     - echo "DEBUG=$DEBUG" >> .env
@@ -140,7 +139,7 @@ deploy-job:
     - sudo docker-compose up -d
     - sudo docker-compose logs app
     - sudo docker rmi $(sudo docker images -f "dangling=true" -q)
-    - echo Deoloyed to the remote server successfully
+    - echo Deployed to the remote server successfully
   tags:
     - ece651
   environment: deployment
