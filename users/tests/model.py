@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from project.setup_test import AbstractTestSetup
 
-'''
+
 class UserModelTest(TestCase, AbstractTestSetup):
 
     # Set up test
@@ -37,4 +37,3 @@ class UserModelTest(TestCase, AbstractTestSetup):
         self.assertEqual(item.phone_number, '1234567890')
         self.assertEqual(item.address, 'First St')
         self.assertEqual(item.province, 'ON')
-'''
