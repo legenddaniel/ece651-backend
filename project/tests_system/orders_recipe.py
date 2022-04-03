@@ -12,28 +12,28 @@ os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = '0.0.0.0:8001'
 
 @tag('selenium-system')
 @override_settings(ALLOWED_HOSTS=['*'])
-class SystemTestOrder(LiveServerTestCase, AbstractTestSetup):
+class SystemTestOrder2(LiveServerTestCase, AbstractTestSetup):
     @classmethod
     def setUpClass(cls):
         cls.host = "0.0.0.0"
         cls.port = 8001
-        super(SystemTestOrder, cls).setUpClass()
+        super(SystemTestOrder2, cls).setUpClass()
         settings.DEBUG = True
         AbstractTestSetup.setup_webdriver(cls)
         AbstractTestSetup.setup_products(cls)
+        AbstractTestSetup.setup_recipe(cls)
 
     def tearDown(self):
         self.browser.quit()
 
-    def test_search_cart_order(self):
-        print("\nStarting system test for: user signup => user login => search for a product => add to cart => add address => place order")
-        SEARCH = 'te'
+    def test_recipe_cart_order(self):
+        print("\nStarting system test for: user signup => user login => search for a recipe => add products in recipe to cart => add address => place order")
         EMAIL = 'test@test.com'
         USERNAME = 'test'
         PASSWORD = '12345678'
 
         '''
-        Search product and add it to cart, then create order and place
+        Search recipe and add products to cart, then create order and place
         '''
 
         from users.models import User
@@ -69,29 +69,16 @@ class SystemTestOrder(LiveServerTestCase, AbstractTestSetup):
             lambda x: self.browser.find_element_by_xpath("//a[@class='nav-link pr-0 userDetail']"))
         self.assertEqual(len(AuthToken.objects.filter(user=user)), 1)
 
-        # Search product
-        searchbar = self.browser.find_element(
-            by=By.CSS_SELECTOR, value='.navbar-nav+div')
-        searchbar.find_element(by=By.TAG_NAME, value='input').send_keys(SEARCH)
-        searchbar.find_element(by=By.TAG_NAME, value='a').click()
-        WebDriverWait(self.browser, 5).until(
-            lambda x: x.current_url == self.fe + '/search/' + SEARCH)
-        list = self.browser.find_elements(
-            by=By.CSS_SELECTOR, value='app-search > .container > .row:last-of-type > div')
-        self.assertEqual(len(list), len(self.products))
-
-        # Add to cart
-        list[0].find_element(by=By.CSS_SELECTOR,
-                             value='app-product-item > a').click()
-        WebDriverWait(self.browser, 5).until(
-            lambda x: x.current_url == self.fe + '/productdetail/1')
-        self.browser.find_element(
-            by=By.CSS_SELECTOR, value='app-product-item-detail ngx-number-spinner+button.btn').click()
-        # WebDriverWait does not work here because
-        # frontend do not signal successful adding an item to the cart
-        # Use sleep instead
+        # Search recipe and add to cart
+        self.browser.find_element(by=By.CLASS_NAME, value='recipelist').click()
         sleep(1)
-        self.assertEqual(CartItem.objects.get(product_id=1).quantity, 1)
+        self.browser.find_element(
+            by=By.CSS_SELECTOR, value='app-recipe-list > .container > .row > div:first-of-type > app-recipe > a').click()
+        sleep(1)
+        self.browser.find_element(by=By.ID, value='buttonAdd').click()
+        sleep(1)
+        self.assertEqual(CartItem.objects.get(
+            product_id=self.products[0].id).quantity, 1)
 
         # Change Information (Add address)
         self.browser.find_element_by_xpath(
@@ -150,7 +137,5 @@ class SystemTestOrder(LiveServerTestCase, AbstractTestSetup):
             lambda x: self.browser.find_element_by_class_name("orderList"))
         self.browser.find_element_by_class_name("orderList").click()
         sleep(1)
-        item = OrderItem.objects.get(product_id=1)
+        item = OrderItem.objects.get(product_id=self.products[0].id)
         self.assertEqual(item.quantity, 1)
-        self.assertEqual(item.order.id, 1)
-

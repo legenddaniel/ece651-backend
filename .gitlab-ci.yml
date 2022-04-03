@@ -139,7 +139,7 @@ deploy-job:
     - sudo docker-compose up -d
     - sudo docker-compose logs app
     - sudo docker rmi $(sudo docker images -f "dangling=true" -q)
-    - echo Deoloyed to the remote server successfully
+    - echo Deployed to the remote server successfully
   tags:
     - ece651
   environment: deployment

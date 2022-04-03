@@ -1,12 +1,13 @@
 from project.setup_test import AbstractTestSetup
-from django.test import TestCase, LiveServerTestCase, override_settings, tag
+from django.test import LiveServerTestCase, override_settings, tag
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support.expected_conditions import alert_is_present
 from django.conf import settings
 import os
 from time import sleep
-os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS']='0.0.0.0:8001'
+os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = '0.0.0.0:8001'
+
+
 @tag('selenium-system')
 @override_settings(ALLOWED_HOSTS=['*'])
 class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
@@ -18,13 +19,14 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
         settings.DEBUG = True
         AbstractTestSetup.setup_webdriver(cls)
         AbstractTestSetup.setup_products(cls)
+        AbstractTestSetup.setup_user(cls, signin=False)
 
     def tearDown(self):
         self.browser.quit()
 
     def test_signup_signin_address(self):
         print("\nStarting system test for: user signup => user login => add shipping address => change shipping address")
-        EMAIL = 'test@test.com'
+        EMAIL = 'test5@test.com'
         USERNAME = 'test'
         PASSWORD = '12345678'
         '''
@@ -65,7 +67,8 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
         self.assertEqual(len(AuthToken.objects.filter(user=user)), 1)
 
         # Add shipping address
-        self.browser.find_element_by_xpath("//a[@class='nav-link pr-0 userDetail']").click()
+        self.browser.find_element_by_xpath(
+            "//a[@class='nav-link pr-0 userDetail']").click()
         self.browser.find_element(by=By.ID, value='change-btn').click()
         self.browser.find_element(
             by=By.ID, value='floatingcardID').send_keys('1111222211112222')
