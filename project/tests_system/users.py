@@ -18,6 +18,7 @@ class SystemTestUser(LiveServerTestCase, AbstractTestSetup):
         settings.DEBUG = True
         AbstractTestSetup.setup_webdriver(cls)
         AbstractTestSetup.setup_products(cls)
+        AbstractTestSetup.setup_user(cls, signin=False)
 
     def tearDown(self):
         self.browser.quit()
