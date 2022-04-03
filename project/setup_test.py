@@ -86,6 +86,47 @@ class AbstractTestSetup(ABC):
         ])
 
     @staticmethod
+    def setup_recipe(self):
+        from recipes.models import Recipe, Nutrient
+
+        self.recipes = Recipe.objects.bulk_create([
+            Recipe(
+                name='recipe1',
+                rating=5,
+                cuisine='greek',
+                image_url='https://test.com/1.png',
+                total_reviews=10,
+                slug='recipe1'
+            ),
+            Recipe(
+                name='recipe2',
+                rating=4,
+                cuisine='middleeast',
+                image_url='https://test.com/2.png',
+                total_reviews=5,
+                slug='recipe2'
+            ),
+            Recipe(
+                name='recipe3',
+                rating=3,
+                cuisine='thai',
+                image_url='https://test.com/3.png',
+                total_reviews=15,
+                slug='recipe3'
+            ),
+        ])
+        self.recipes[0].products.set([self.products[0], self.products[1]])
+        self.recipes[1].products.set([self.products[1], self.products[2]])
+        self.recipes[2].products.set([self.products[0], self.products[1], self.products[2]])
+
+        self.p1_nutrients = Nutrient.objects.create(recipe=self.recipes[0],
+                                                   calories="100 cal")
+        self.p2_nutrients = Nutrient.objects.create(recipe=self.recipes[1],
+                                                   calories="200 cal")
+        self.p3_nutrients = Nutrient.objects.create(recipe=self.recipes[2],
+                                                   calories="300 cal")
+    
+    @staticmethod
     def setup_ship_add(self):
 
         from users.models import ShippingAddress
