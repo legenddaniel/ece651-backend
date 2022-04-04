@@ -97,7 +97,6 @@ system-test-job:
   stage: system-test
   only:
     - master
-    - PER31-more-tests
   script:
     - echo Running system tests....
     - echo "DEBUG=$DEBUG" >> .env
