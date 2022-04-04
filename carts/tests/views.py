@@ -252,15 +252,3 @@ class CartViewTest(APITestCase, AbstractTestSetup):
             res = self.client.delete('/api/cart/')
             for assertion in test['assertions']:
                 assertion(res)
-
-    def test_wrong_request(self):
-        test = {
-                'auth': True,
-                'item_id': self.cart_items[0].id,
-                'data': {
-                    "quantit": 5
-                },
-            }
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
-        res = self.client.patch('/api/cart/%d/' %test['item_id'], test['data'])
-        self.assertEqual(str(res), "Invalid field")
