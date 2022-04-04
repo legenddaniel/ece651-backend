@@ -84,6 +84,8 @@ unit-test-integration-test-job:
     - echo "SQL_PASSWORD=$SQL_PASSWORD" >> .env
     - echo "SQL_HOST=$SQL_HOST" >> .env
     - echo "SQL_PORT=$SQL_PORT" >> .env
+    - echo "Removing existing running containers"
+    - sudo docker rm -f $(sudo docker ps -a -q)
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py migrate
     - sudo docker-compose -f docker-compose.yml run --rm app python3 manage.py test --exclude-tag=selenium-system --exclude-tag=selenium
     - sudo docker-compose -f docker-compose.yml down
